@@ -152,6 +152,11 @@
       <!-- ==================== SCENE 3: WHAT IS THE GIL? ==================== -->
       <div id="vis-scene-3" class="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none transition-all duration-1000">
         <div class="relative w-full max-w-lg h-[260px] flex items-center justify-center">
+          <!-- SVG paths for thread convergence -->
+          <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" viewBox="0 0 512 260" id="s3-paths">
+            <path d="M 10 140 Q 100 85, 175 95" stroke="#B38CFF" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round" id="s3-path-a"/>
+            <path d="M 502 140 Q 412 85, 337 95" stroke="#B38CFF" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round" id="s3-path-b"/>
+          </svg>
           <!-- Interpreter box -->
           <div class="gil-card-bg border-2 border-[#E95420]/60 rounded-2xl px-10 py-6 gil-glow z-10" id="s3-interpreter">
             <div class="flex flex-col items-center gap-2">
@@ -205,6 +210,21 @@
           <span class="bg-[#B38CFF]/15 border border-[#B38CFF]/30 rounded px-2.5 py-1 text-[10px] font-mono text-[#B38CFF]" id="s4-t1-label">Thread 1</span>
           <span class="bg-[#B38CFF]/15 border border-[#B38CFF]/30 rounded px-2.5 py-1 text-[10px] font-mono text-[#B38CFF]" id="s4-t2-label">Thread 2</span>
         </div>
+        <!-- Gantt Timeline -->
+        <div class="w-full max-w-md mt-1 opacity-0 transition-opacity duration-700" id="s4-gantt">
+          <div class="flex items-center gap-1 text-[9px] font-mono gil-muted mb-1">
+            <span class="w-2 h-2 rounded bg-[#B38CFF]"></span> T1
+            <span class="w-2 h-2 rounded bg-[#57D38C] ml-2"></span> T2
+          </div>
+          <div class="flex h-2 rounded-full overflow-hidden bg-gray-200/50 dark:bg-gray-700/50">
+            <div class="h-full bg-[#B38CFF] transition-all duration-500" id="s4-gantt-1" style="width: 0%;"></div>
+            <div class="h-full bg-[#57D38C] transition-all duration-500" id="s4-gantt-2" style="width: 0%;"></div>
+            <div class="h-full bg-[#B38CFF] transition-all duration-500" id="s4-gantt-3" style="width: 0%;"></div>
+            <div class="h-full bg-[#57D38C] transition-all duration-500" id="s4-gantt-4" style="width: 0%;"></div>
+            <div class="h-full bg-[#B38CFF] transition-all duration-500" id="s4-gantt-5" style="width: 0%;"></div>
+            <div class="h-full bg-[#57D38C] transition-all duration-500" id="s4-gantt-6" style="width: 0%;"></div>
+          </div>
+        </div>
         <p class="text-xs gil-muted opacity-0 transition-all duration-700" id="s4-text">
           Concurrency &ne; Parallel execution
         </p>
@@ -216,13 +236,18 @@
           <span class="gil-muted">for</span> i <span class="gil-muted">in</span> range(1_000_000_000):<br/>
           <span class="pl-5">total += i</span>
         </div>
-        <div class="flex gap-8 mt-1">
+        <div class="flex items-end gap-3 mt-1">
           <div class="flex flex-col items-center gap-1.5">
             <span class="text-[10px] font-mono gil-muted">Core 1</span>
             <div class="w-8 h-20 gil-card-bg border gil-border rounded-md relative overflow-hidden">
               <div class="absolute bottom-0 left-0 right-0 bg-[#57D38C] transition-all duration-1000 ease-physics opacity-0" id="s5-bar-1" style="height: 0%;"></div>
             </div>
             <span class="text-[10px] font-mono gil-muted" id="s5-pct-1">0%</span>
+          </div>
+          <!-- GIL transfer indicator -->
+          <div class="flex flex-col items-center gap-0.5 pb-1">
+            <span class="material-symbols-outlined text-sm text-[#E95420] opacity-0 transition-all duration-700" id="s5-gil-arrow">swap_horiz</span>
+            <span class="text-[8px] font-mono text-[#E95420] opacity-0 transition-opacity duration-700" id="s5-gil-label">GIL</span>
           </div>
           <div class="flex flex-col items-center gap-1.5">
             <span class="text-[10px] font-mono gil-muted">Core 2</span>
@@ -571,6 +596,8 @@
         const threadA = document.getElementById('s3-thread-a');
         const threadB = document.getElementById('s3-thread-b');
         const text = document.getElementById('s3-text');
+        const pathA = document.getElementById('s3-path-a');
+        const pathB = document.getElementById('s3-path-b');
 
         threadA.style.transition = 'none';
         threadA.style.left = '0.5rem';
@@ -580,6 +607,17 @@
         threadB.style.transform = 'translateY(-50%)';
         text.style.transition = 'none';
         text.style.opacity = '0';
+        // Reset SVG paths
+        [pathA, pathB].forEach(function(p) {
+          if (!p) return;
+          p.style.transition = 'none';
+          var len = p.getTotalLength();
+          p.style.strokeDasharray = len;
+          p.style.strokeDashoffset = len;
+          p.style.opacity = '0.4';
+          void p.offsetHeight;
+          p.style.transition = 'stroke-dashoffset 1s ease-out';
+        });
         void threadA.offsetHeight;
         threadA.style.transition = '';
         threadB.style.transition = '';
@@ -590,10 +628,12 @@
           if (state.currentScene !== 3) return;
           threadA.style.left = '50%';
           threadA.style.transform = 'translate(-50%, -50%)';
+          if (pathA) pathA.style.strokeDashoffset = '0';
         });
         steps.push(function() {
           if (state.currentScene !== 3) return;
           threadB.style.right = '35%';
+          if (pathB) pathB.style.strokeDashoffset = '0';
         });
         steps.push(function() {
           if (state.currentScene !== 3) return;
@@ -609,6 +649,9 @@
         const t1Label = document.getElementById('s4-t1-label');
         const t2Label = document.getElementById('s4-t2-label');
         const text = document.getElementById('s4-text');
+        const gantt = document.getElementById('s4-gantt');
+        var ganttSegments = [];
+        for (var gs = 1; gs <= 6; gs++) ganttSegments.push(document.getElementById('s4-gantt-' + gs));
 
         lines1.forEach(l => { l.style.transition = 'none'; l.classList.remove('bg-[#57D38C]/20', 'text-[#57D38C]'); });
         lines2.forEach(l => { l.style.transition = 'none'; l.classList.remove('bg-[#57D38C]/20', 'text-[#57D38C]'); });
@@ -618,11 +661,22 @@
         t2Label.classList.remove('border-[#57D38C]/50', 'text-[#57D38C]');
         text.style.transition = 'none';
         text.style.opacity = '0';
+        if (gantt) gantt.style.opacity = '0';
+        ganttSegments.forEach(function(s) { if (s) s.style.width = '0%'; });
         void gilIcon.offsetHeight;
         lines1.forEach(l => { l.style.transition = ''; });
         lines2.forEach(l => { l.style.transition = ''; });
         gilIcon.style.transition = '';
         text.style.transition = '';
+
+        var ganttIdx = 0;
+        function expandGantt() {
+          if (ganttIdx < ganttSegments.length && ganttSegments[ganttIdx]) {
+            if (gantt) gantt.style.opacity = '1';
+            ganttSegments[ganttIdx].style.width = '100%';
+            ganttIdx++;
+          }
+        }
 
         var steps = [];
         lines1.forEach(function(line) {
@@ -631,6 +685,7 @@
             line.classList.add('bg-[#57D38C]/20', 'text-[#57D38C]');
             t1Label.classList.add('border-[#57D38C]/50', 'text-[#57D38C]');
             t2Label.classList.remove('border-[#57D38C]/50', 'text-[#57D38C]');
+            expandGantt();
           });
           steps.push(function() {
             if (state.currentScene !== 4) return;
@@ -642,11 +697,13 @@
           gilIcon.style.transform = 'rotate(180deg)';
           t1Label.classList.remove('border-[#57D38C]/50', 'text-[#57D38C]');
           t2Label.classList.add('border-[#57D38C]/50', 'text-[#57D38C]');
+          expandGantt();
         });
         lines2.forEach(function(line) {
           steps.push(function() {
             if (state.currentScene !== 4) return;
             line.classList.add('bg-[#57D38C]/20', 'text-[#57D38C]');
+            expandGantt();
           });
           steps.push(function() {
             if (state.currentScene !== 4) return;
@@ -667,6 +724,8 @@
         const pct1 = document.getElementById('s5-pct-1');
         const pct2 = document.getElementById('s5-pct-2');
         const text = document.getElementById('s5-text');
+        const gilArrow = document.getElementById('s5-gil-arrow');
+        const gilLabel = document.getElementById('s5-gil-label');
 
         snapHidden(code);
         [bar1, bar2].forEach(b => {
@@ -680,6 +739,8 @@
         text.style.transition = 'none';
         text.style.opacity = '0';
         text.style.transition = '';
+        if (gilArrow) { gilArrow.style.opacity = '0'; gilArrow.textContent = 'swap_horiz'; }
+        if (gilLabel) gilLabel.style.opacity = '0';
 
         var steps = [];
         steps.push(function() {
@@ -696,6 +757,12 @@
             bar2.style.height = isEven ? '10%' : '80%';
             pct1.textContent = isEven ? '80%' : '10%';
             pct2.textContent = isEven ? '10%' : '80%';
+            // Animate GIL transfer indicator
+            if (gilArrow) {
+              gilArrow.style.opacity = '1';
+              gilArrow.textContent = isEven ? 'arrow_back' : 'arrow_forward';
+            }
+            if (gilLabel) gilLabel.style.opacity = '1';
             cycleCount = (cycleCount + 1) % 6;
             setTimeout(coreCycle, 1400);
           }

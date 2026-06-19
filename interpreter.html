@@ -36,6 +36,10 @@
     html.dark #fullscreen-canvas { background-color: #0F1115; border-color: rgba(255, 255, 255, 0.08); }
     .scene-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 3px; height: 3px; border-radius: 9999px; background-color: rgba(156,163,175,0.5); z-index: 10; pointer-events: none; }
     html.dark .scene-marker { background-color: rgba(255,255,255,0.3); }
+    .flow-pulse { animation: flowPulse 0.5s ease-in-out 2; }
+    @keyframes flowPulse { 0% { opacity: 0.3; transform: translateX(-2px); } 50% { opacity: 1; transform: translateX(3px); } 100% { opacity: 0.7; transform: translateX(0); } }
+    .step-bar { animation: fillBar 0.6s ease-out forwards; }
+    @keyframes fillBar { from { width: 0; } to { width: 100%; } }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -226,6 +230,12 @@
           </div>
         </div>
 
+        <!-- Flow Arrow SVG -->
+        <svg class="w-8 h-16 overflow-visible opacity-0 transition-opacity duration-500" id="flow-arrow-6" viewBox="0 0 32 64">
+          <path d="M 4 58 L 16 4 L 28 58" stroke="#E95420" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" id="flow-arrow-path-6"/>
+          <polygon points="24,52 28,58 20,58" fill="#E95420" id="flow-arrow-head-6"/>
+        </svg>
+
         <!-- Memory State -->
         <div class="bg-white dark:bg-[#1A1D25] border-2 border-orange-600 dark:border-orange-400 rounded-xl p-4 w-60 text-left font-mono shadow-lg">
           <div class="text-[10px] text-inkMuted dark:text-gray-400 mb-2 border-b border-orange-200 dark:border-gray-700 pb-1">Environment Memory</div>
@@ -284,6 +294,22 @@
           <div class="flex items-center justify-between py-1 pl-4" id="prog-line-4">
             <span class="text-inkLight dark:text-gray-200">print(result)</span>
             <span class="material-symbols-outlined text-xs text-orange-600 dark:text-orange-400 opacity-0">check</span>
+          </div>
+          <!-- Execution Timeline -->
+          <div class="mt-3 pt-2 border-t border-orange-200 dark:border-gray-700">
+            <div class="text-[10px] text-inkMuted dark:text-gray-400 mb-1">Execution Trace</div>
+            <div class="flex h-1.5 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800" id="exec-timeline">
+              <div class="h-full bg-[#57D38C] transition-all duration-500" id="exec-seg-1" style="width: 0%;"></div>
+              <div class="h-full bg-[#57D38C] transition-all duration-500" id="exec-seg-2" style="width: 0%;"></div>
+              <div class="h-full bg-[#57D38C] transition-all duration-500" id="exec-seg-3" style="width: 0%;"></div>
+              <div class="h-full bg-[#57D38C] transition-all duration-500" id="exec-seg-4" style="width: 0%;"></div>
+            </div>
+            <div class="flex justify-between text-[8px] text-inkMuted dark:text-gray-500 mt-0.5">
+              <span>Assign</span>
+              <span>Assign</span>
+              <span>Arith</span>
+              <span>Print</span>
+            </div>
           </div>
         </div>
       </div>
@@ -465,14 +491,26 @@
       else if (index === 4) {
         var block = document.getElementById('mem-item-x');
         block.className = "text-sm flex justify-between py-1 transition-all duration-700 transform translate-y-2 opacity-0";
-        var steps = [function() { block.classList.remove('opacity-0', 'translate-y-2'); }];
+        var steps = [function() {
+          var arrow = document.querySelector('#vis-scene-4 .material-symbols-outlined.text-3xl');
+          if (arrow) arrow.classList.add('flow-pulse');
+          setTimeout(function() {
+            block.classList.remove('opacity-0', 'translate-y-2');
+          }, 500);
+        }];
         state.setSteps(steps);
       }
 
       else if (index === 5) {
         var block = document.getElementById('mem-item-y');
         block.className = "text-sm flex justify-between py-1 transition-all duration-700 transform translate-y-2 opacity-0";
-        var steps = [function() { block.classList.remove('opacity-0', 'translate-y-2'); }];
+        var steps = [function() {
+          var arrow = document.querySelector('#vis-scene-5 .material-symbols-outlined.text-3xl');
+          if (arrow) arrow.classList.add('flow-pulse');
+          setTimeout(function() {
+            block.classList.remove('opacity-0', 'translate-y-2');
+          }, 500);
+        }];
         state.setSteps(steps);
       }
 
@@ -482,12 +520,15 @@
         var resolve = document.getElementById('expr-resolve');
         var sum = document.getElementById('expr-sum');
         var memResult = document.getElementById('mem-item-result');
+        var flowArrow = document.getElementById('flow-arrow-6');
+        var flowPath = document.getElementById('flow-arrow-path-6');
 
         valX.textContent = "x";
         valY.textContent = "y";
         resolve.className = "text-orange-600 dark:text-orange-400 font-bold opacity-0 transition-opacity duration-500";
         sum.className = "text-orange-700 dark:text-orange-300 font-bold opacity-0 transition-opacity duration-500";
         memResult.className = "text-sm flex justify-between py-1 text-orange-700 dark:text-orange-300 font-bold transition-all duration-700 opacity-0 transform translate-y-2";
+        if (flowArrow) flowArrow.style.opacity = '0';
 
         var steps = [];
         steps.push(function() {
@@ -505,8 +546,21 @@
           sum.classList.add('opacity-100');
         });
         steps.push(function() {
-          memResult.classList.remove('opacity-0', 'translate-y-2');
-          memResult.classList.add('opacity-100');
+          // Animate flow arrow
+          if (flowPath) {
+            var len = flowPath.getTotalLength();
+            flowPath.style.strokeDasharray = len;
+            flowPath.style.strokeDashoffset = len;
+            flowPath.style.transition = 'stroke-dashoffset 0.6s ease-out';
+            flowArrow.style.opacity = '1';
+            requestAnimationFrame(function() {
+              flowPath.style.strokeDashoffset = '0';
+            });
+          }
+          setTimeout(function() {
+            memResult.classList.remove('opacity-0', 'translate-y-2');
+            memResult.classList.add('opacity-100');
+          }, 700);
         });
         state.setSteps(steps);
       }
@@ -540,6 +594,12 @@
           var check = line.querySelector('span:last-child');
           check.className = "material-symbols-outlined text-xs text-orange-600 dark:text-orange-400 opacity-0 transition-all duration-300 transform scale-50";
         }
+        // Reset timeline segments
+        var segColors = ['#57D38C', '#57D38C', '#E95420', '#FFB454'];
+        for (var seg = 1; seg <= 4; seg++) {
+          var el = document.getElementById('exec-seg-' + seg);
+          if (el) { el.style.width = '0%'; el.style.backgroundColor = segColors[seg - 1]; }
+        }
 
         var steps = [];
         for (var s = 0; s < 4; s++) {
@@ -549,6 +609,9 @@
               var check = document.getElementById('prog-line-' + (idx + 1)).querySelector('span:last-child');
               check.classList.remove('opacity-0', 'scale-50');
               check.classList.add('opacity-100', 'scale-100');
+              // Expand timeline segment
+              var seg = document.getElementById('exec-seg-' + (idx + 1));
+              if (seg) seg.style.width = '100%';
             };
           }(s));
         }

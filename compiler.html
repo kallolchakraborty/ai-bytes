@@ -40,6 +40,13 @@
     html.dark #ast-svg text { fill: #E8E8E8; }
     .scene-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 3px; height: 3px; border-radius: 9999px; background-color: rgba(156,163,175,0.5); z-index: 10; pointer-events: none; }
     html.dark .scene-marker { background-color: rgba(255,255,255,0.3); }
+    .runner-glow { animation: runnerPulse 1.5s ease-in-out infinite; }
+    @keyframes runnerPulse { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.4; } }
+    .flow-arrow { animation: arrowDash 0.6s linear forwards; stroke-dasharray: 8; }
+    @keyframes arrowDash { to { stroke-dashoffset: -16; } }
+    .node-active .accent-node { background-color: #FFF0E8; box-shadow: 0 0 10px rgba(233, 84, 32, 0.25); }
+    html.dark .node-active .accent-node { background-color: rgba(233, 84, 32, 0.15); box-shadow: 0 0 12px rgba(233, 84, 32, 0.35); }
+    html.dark .node-active span:not(.material-symbols-outlined) { color: #F5A389 !important; }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -169,13 +176,22 @@
 
       <!-- ==================== SCENE 4: LEXICAL ANALYSIS ==================== -->
       <div id="vis-scene-4" class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-1000">
-        <div class="w-full max-w-2xl flex flex-col gap-6">
+        <div class="w-full max-w-2xl flex flex-col gap-3">
+          <!-- Source Code Panel -->
+          <div class="bg-white dark:bg-[#1A1D25] border border-gray-200 dark:border-gray-700 rounded-lg p-3 font-mono text-xs overflow-x-auto opacity-0 transition-all duration-700" id="lexer-source-panel">
+            <div class="text-[10px] text-inkMuted dark:text-gray-400 mb-1">Source Input</div>
+            <code id="lexer-source-code" class="text-inkLight dark:text-gray-200"></code>
+          </div>
+          <!-- Extraction SVG -->
+          <svg class="w-full h-5 overflow-visible" id="lexer-extraction-svg">
+            <line x1="50%" y1="0" x2="50%" y2="0" stroke="#E95420" stroke-width="1" stroke-dasharray="4 3" id="lexer-drop-line"/>
+          </svg>
           <div class="flex items-center justify-between border-b border-orange-200 dark:border-gray-700 pb-2 text-xs font-mono text-inkMuted dark:text-gray-400">
             <span>Input Stream</span>
             <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">arrow_right_alt</span>
             <span>Token Stream</span>
           </div>
-          <div class="flex flex-wrap gap-2 justify-center" id="lexer-token-container">
+          <div class="flex flex-wrap gap-2 justify-center min-h-[60px]" id="lexer-token-container">
           </div>
         </div>
       </div>
@@ -368,21 +384,49 @@
 
       else if (index === 3) {
         var nodes = document.querySelectorAll('.pipeline-node');
-        nodes.forEach(function(node) {
-          node.classList.add('opacity-0', 'translate-y-4');
-          node.classList.remove('opacity-100', 'translate-y-0');
-        });
+        var svg = document.querySelector('#vis-scene-3 svg');
         var pulse = document.getElementById('pipeline-pulse');
-        if (pulse) pulse.classList.add('opacity-0');
+        if (pulse) pulse.style.opacity = '0';
+
+        // Remove translate-y-4 (no more slide-up), start nodes dimmed
+        nodes.forEach(function(node) {
+          node.classList.remove('translate-y-4', 'opacity-0', 'opacity-100');
+          node.classList.add('opacity-20');
+        });
+
+        // Create SVG runner dot that slides through the pipeline
+        var rg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        var glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        glow.setAttribute('r', '6');
+        glow.setAttribute('fill', '#E95420');
+        glow.setAttribute('opacity', '0.15');
+        var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('r', '3');
+        dot.setAttribute('fill', '#E95420');
+        rg.appendChild(glow);
+        rg.appendChild(dot);
+        svg.appendChild(rg);
 
         var steps = [];
-        nodes.forEach(function(node) {
-          steps.push(function() {
-            node.classList.remove('opacity-0', 'translate-y-4');
-            node.classList.add('opacity-100', 'translate-y-0');
-          });
-        });
+        var runnerPositions = [0, 16.67, 33.33, 50, 66.67, 83.33, 100];
+        // Step 0: just light up first node, runner stays at position 0
         steps.push(function() {
+          nodes[0].classList.remove('opacity-20');
+          nodes[0].classList.add('opacity-100', 'node-active');
+        });
+        // Steps 1-6: runner slides to next node, lights it up
+        for (var si = 1; si < nodes.length; si++) {
+          (function(idx) {
+            steps.push(function() {
+              rg.setAttribute('transform', 'translate(' + runnerPositions[idx] + ', 3)');
+              nodes[idx].classList.remove('opacity-20');
+              nodes[idx].classList.add('opacity-100', 'node-active');
+            });
+          })(si);
+        }
+        // Final: runner pulses, pipeline pulse appears
+        steps.push(function() {
+          glow.classList.add('runner-glow');
           if (pulse) pulse.classList.remove('opacity-0');
         });
         state.setSteps(steps);
@@ -390,17 +434,36 @@
 
       else if (index === 4) {
         var container = document.getElementById('lexer-token-container');
+        var sourcePanel = document.getElementById('lexer-source-panel');
+        var sourceCode = document.getElementById('lexer-source-code');
+        var dropLine = document.getElementById('lexer-drop-line');
+
         container.innerHTML = "";
+        sourceCode.textContent = data.codeString;
+        sourcePanel.classList.remove('opacity-100');
+        sourcePanel.classList.add('opacity-0');
+        dropLine.setAttribute('y2', '0');
+
         var tokens = data.tokens;
         var steps = [];
 
+        // Step 0: reveal source code panel
+        steps.push(function() {
+          sourcePanel.classList.remove('opacity-0');
+        });
+
         tokens.forEach(function(t) {
           var el = document.createElement('div');
-          el.className = 'px-3 py-1.5 border rounded-lg text-xs font-mono transition-all duration-500 transform translate-y-4 opacity-0 ease-spring ' + t.class;
+          el.className = 'px-3 py-1.5 border rounded-lg text-xs font-mono transition-all duration-500 opacity-0 translate-y-[-12px] ease-spring ' + t.class;
           el.textContent = t.text;
           container.appendChild(el);
           steps.push(function() {
-            el.classList.remove('opacity-0', 'translate-y-4');
+            // Extend drop line then snap back
+            dropLine.setAttribute('y2', '100%');
+            var self = dropLine;
+            setTimeout(function() { self.setAttribute('y2', '0'); }, 400);
+            // Token drops into place
+            el.classList.remove('opacity-0', 'translate-y-[-12px]');
           });
         });
         state.setSteps(steps);
@@ -509,7 +572,7 @@
       else if (index === 8) {
         var asmList = document.querySelectorAll('#asm-lines-container [data-asm]');
         asmList.forEach(function(line) {
-          line.className = "opacity-0 translate-y-2 transition-all duration-500";
+          line.className = "opacity-0 translate-x-[-8px] transition-all duration-500";
         });
         var binContainer = document.getElementById('binary-pulse-container');
         binContainer.innerHTML = "";
@@ -517,7 +580,7 @@
         var steps = [];
         asmList.forEach(function(line) {
           steps.push(function() {
-            line.classList.remove('opacity-0', 'translate-y-2');
+            line.classList.remove('opacity-0', 'translate-x-[-8px]');
           });
         });
 
