@@ -33,9 +33,6 @@ function initAnimationPlayer(config) {
   }
 
   var el = {
-    counter: document.getElementById('scene-counter'),
-    title: document.getElementById('scene-title'),
-    subtitle: document.getElementById('scene-subtitle'),
     progress: document.getElementById('timeline-progress'),
     playBtn: document.getElementById('play-btn'),
     playIcon: document.getElementById('play-icon'),
@@ -105,27 +102,6 @@ function initAnimationPlayer(config) {
         tag.setAttribute('aria-selected', isTarget ? 'true' : 'false');
       }
     });
-
-    el.title.style.transition = 'none';
-    el.subtitle.style.transition = 'none';
-    el.title.style.opacity = '0';
-    el.title.style.transform = 'translateY(8px)';
-    el.subtitle.style.opacity = '0';
-    el.subtitle.style.transform = 'translateY(8px)';
-    void el.title.offsetHeight;
-    el.title.style.transition = '';
-    el.subtitle.style.transition = '';
-
-    setTimeout(function () {
-      el.counter.textContent = data[sceneIndex - 1].label;
-      el.title.textContent = data[sceneIndex - 1].title;
-      el.subtitle.textContent = data[sceneIndex - 1].subtitle;
-
-      el.title.style.opacity = '1';
-      el.title.style.transform = 'translateY(0)';
-      el.subtitle.style.opacity = '1';
-      el.subtitle.style.transform = 'translateY(0)';
-    }, 300);
 
     var activeVis = document.getElementById('vis-scene-' + sceneIndex);
     if (activeVis) {
@@ -349,12 +325,8 @@ function initAnimationPlayer(config) {
   if (window.self !== window.top) {
     var header = document.querySelector('header');
     var footer = document.querySelector('footer');
-    var counterParent = document.getElementById('scene-counter');
     if (header) header.classList.add('hidden');
     if (footer) footer.classList.add('hidden');
-    if (counterParent) {
-      // Keep the inline title/counter container visible as it is now compact and positioned nicely in the controls row.
-    }
     document.body.classList.remove('justify-between');
     document.body.classList.add('justify-center', 'p-0', 'overflow-hidden');
     var main = document.querySelector('main');
