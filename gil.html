@@ -76,19 +76,19 @@
   <!-- ==================== MAIN VIEWPORT ==================== -->
   <main id="main-content" class="flex-grow flex flex-col items-center justify-center px-6 py-8 md:py-16 max-w-6xl w-full mx-auto scene-container">
     
-    <!-- Info Overlay (Step Labels & Explanations) -->
-    <div class="w-full text-center mb-8 min-h-[120px] flex flex-col justify-center gap-2">
-      <span id="scene-counter" class="text-xs font-mono font-bold tracking-widest text-[#E95420] uppercase">Scene 1 / 10</span>
+    <!-- Info Overlay -->
+    <div class="w-full text-center mb-8 space-y-3">
+      <span id="scene-counter" class="inline-block text-[11px] font-mono font-bold tracking-wider text-[#E95420] bg-[#E95420]/10 px-3 py-1 rounded-full border border-[#E95420]/30">Scene 1 / 10</span>
       <h1 id="scene-title" class="text-3xl md:text-5xl font-bold tracking-tight text-gray-100 transition-all duration-700 ease-physics transform translate-y-2 opacity-0">
         How Python's GIL Works
       </h1>
-      <p id="scene-subtitle" class="text-base md:text-xl text-[#A0A0A0] max-w-2xl mx-auto transition-all duration-700 ease-physics delay-100 transform translate-y-2 opacity-0">
+      <p id="scene-subtitle" class="text-base md:text-lg text-[#A0A0A0] max-w-2xl mx-auto leading-relaxed transition-all duration-700 ease-physics delay-100 transform translate-y-2 opacity-0">
         Why Python threads don't always run in parallel.
       </p>
     </div>
 
     <!-- Central Sandbox/Canvas Screen -->
-    <div id="fullscreen-canvas" class="w-full aspect-[16/9] max-h-[500px] border border-gray-700 rounded-2xl bg-[#0F1115] p-6 relative overflow-hidden flex items-center justify-center shadow-lg">
+    <div id="fullscreen-canvas" class="w-full aspect-[16/9] border border-gray-700 rounded-2xl bg-[#0F1115] p-3 relative overflow-hidden flex items-center justify-center shadow-xl">
 
       <!-- ==================== SCENE 1: TITLE ==================== -->
       <div id="vis-scene-1" class="absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 pointer-events-none transition-all duration-1000">
@@ -420,40 +420,41 @@
 
     </div>
 
-    <!-- Timeline Progress Bar -->
-    <div class="w-full mt-8 flex flex-col gap-4">
-      <div class="w-full h-0.5 bg-gray-700 rounded-full relative overflow-hidden cursor-pointer" id="timeline-bar">
-        <div class="absolute inset-y-0 left-0 bg-[#E95420] w-0 transition-all duration-300" id="timeline-progress"></div>
+    <!-- Controls -->
+    <div class="w-full mt-6 space-y-4">
+      <div class="w-full h-1 bg-gray-700 rounded-full relative overflow-hidden cursor-pointer" id="timeline-bar">
+        <div class="absolute inset-y-0 left-0 bg-[#E95420] rounded-full w-0 transition-all duration-300" id="timeline-progress"></div>
       </div>
 
-      <div class="flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-sm">
-        <div class="flex items-center gap-4">
-          <button id="prev-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Previous scene">
-            <span class="material-symbols-outlined">navigate_before</span>
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <button id="prev-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Previous scene">
+            <span class="material-symbols-outlined text-xl">navigate_before</span>
           </button>
-          <button id="play-btn" class="w-10 h-10 rounded-full bg-[#E95420] hover:bg-[#C34113] flex items-center justify-center text-white transition-all shadow-lg" aria-label="Play/Pause">
-            <span class="material-symbols-outlined" id="play-icon">play_arrow</span>
+          <button id="play-btn" class="w-12 h-12 rounded-full bg-[#E95420] hover:bg-[#C34113] flex items-center justify-center text-white transition-all shadow-lg" aria-label="Play/Pause">
+            <span class="material-symbols-outlined text-2xl" id="play-icon">play_arrow</span>
           </button>
-          <button id="next-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Next scene">
-            <span class="material-symbols-outlined">navigate_next</span>
-          </button>
-          <button id="fullscreen-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Toggle Fullscreen">
-            <span class="material-symbols-outlined">fullscreen</span>
+          <button id="next-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Next scene">
+            <span class="material-symbols-outlined text-xl">navigate_next</span>
           </button>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-1.5 md:gap-4 font-mono text-[10px] md:text-[11px] text-gray-400" id="scene-tags" role="tablist" aria-label="GIL scenes">
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors active-tag text-[#E95420]" data-target="1" role="tab" aria-selected="true">Title</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="2" role="tab" aria-selected="false">Intuition</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="3" role="tab" aria-selected="false">GIL</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="4" role="tab" aria-selected="false">Switching</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="5" role="tab" aria-selected="false">CPU</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="6" role="tab" aria-selected="false">Why GIL</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="7" role="tab" aria-selected="false">I/O</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="8" role="tab" aria-selected="false">Threads</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="9" role="tab" aria-selected="false">MultiProc</button>
-          <button type="button" class="hover:text-[#E95420] cursor-pointer transition-colors" data-target="10" role="tab" aria-selected="false">Summary</button>
-        </div>
+        <button id="fullscreen-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-gray-200 transition-all" aria-label="Toggle Fullscreen">
+          <span class="material-symbols-outlined text-xl">fullscreen</span>
+        </button>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2" id="scene-tags" role="tablist" aria-label="GIL scenes">
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-[#E95420] text-white border-[#E95420]" data-target="1" role="tab" aria-selected="true">Title</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="2" role="tab" aria-selected="false">Intuition</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="3" role="tab" aria-selected="false">GIL</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="4" role="tab" aria-selected="false">Switching</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="5" role="tab" aria-selected="false">CPU</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="6" role="tab" aria-selected="false">Why GIL</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="7" role="tab" aria-selected="false">I/O</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="8" role="tab" aria-selected="false">Threads</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="9" role="tab" aria-selected="false">MultiProc</button>
+        <button type="button" class="px-3 py-1 rounded-full text-[11px] font-mono font-medium border cursor-pointer transition-all duration-200 bg-transparent text-gray-400 border-gray-600 hover:border-[#E95420] hover:text-[#E95420]" data-target="10" role="tab" aria-selected="false">Summary</button>
       </div>
     </div>
 
@@ -969,8 +970,8 @@
       initAnimationPlayer({
         totalScenes: 10,
         sceneData: json.scenes,
-        activeTagClass: ['text-[#E95420]'],
-        inactiveTagClass: ['text-gray-400'],
+        activeTagClass: ['bg-[#E95420]', 'text-white', 'border-[#E95420]'],
+        inactiveTagClass: ['bg-transparent', 'text-gray-400', 'border-gray-600', 'hover:border-[#E95420]', 'hover:text-[#E95420]'],
         onSceneAnimation: triggerSceneAnimation
       });
     });
