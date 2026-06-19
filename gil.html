@@ -73,6 +73,8 @@
     }
     .anim-float { animation: float 3s ease-in-out infinite; }
     .anim-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .scene-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 3px; height: 3px; border-radius: 9999px; background-color: rgba(156,163,175,0.5); z-index: 10; pointer-events: none; }
+    html.dark .scene-marker { background-color: rgba(255,255,255,0.3); }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -80,37 +82,35 @@
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:text-[#E95420] focus:border focus:border-[#E95420] focus:rounded-lg focus:shadow-lg focus:text-sm focus:font-semibold focus:outline-none focus:ring-2 focus:ring-[#E95420]">Skip to main content</a>
 
   <!-- ==================== HEADER ==================== -->
-  <header class="border-b gil-border px-8 py-4 flex items-center justify-between z-10 backdrop-blur-md sticky top-0">
-    <a href="index.html" class="flex items-center gap-3 group">
-      <img src="assets/logo.svg" alt="Logo" class="w-6 h-6 object-contain" />
-      <span class="font-bold text-sm tracking-tight gil-text hover:text-[#E95420] transition-colors">Quick Reference</span>
+  <header class="border-b gil-border px-6 py-3 flex items-center justify-between z-10 sticky top-0" style="background-color: var(--gil-page-bg);">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <img src="assets/logo.svg" alt="Logo" class="w-5 h-5 object-contain" />
+      <span class="font-semibold text-xs tracking-tight gil-text hover:text-[#E95420] transition-colors">Quick Reference</span>
     </a>
-    <div class="flex items-center gap-6">
-      <a href="docs.html" class="text-xs font-semibold gil-muted hover:text-[#E95420] transition-colors">Back to Docs</a>
-      <button class="theme-toggle-btn w-8 h-8 rounded-xl hover:bg-white/5 flex items-center justify-center gil-muted hover:text-[#E95420] transition-all" aria-label="Toggle theme">
-        <span class="material-symbols-outlined text-lg">light_mode</span>
+    <div class="flex items-center gap-4">
+      <a href="docs.html" class="text-[10px] font-semibold gil-muted hover:text-[#E95420] transition-colors">Back to Docs</a>
+      <button class="theme-toggle-btn w-7 h-7 rounded-lg hover:bg-white/5 flex items-center justify-center gil-muted hover:text-[#E95420] transition-all" aria-label="Toggle theme">
+        <span class="material-symbols-outlined text-sm">light_mode</span>
       </button>
-      <div class="h-3 w-px gil-card-bg"></div>
-      <span class="text-xs font-mono text-[#E95420]">Interactive Visual Essay</span>
     </div>
   </header>
 
   <!-- ==================== MAIN VIEWPORT ==================== -->
-  <main id="main-content" class="flex-grow flex flex-col items-center justify-center px-6 py-8 md:py-16 max-w-6xl w-full mx-auto scene-container">
+  <main id="main-content" class="flex-grow flex flex-col items-center justify-center px-6 py-6 md:py-10 max-w-6xl w-full mx-auto scene-container">
     
     <!-- Info Overlay -->
-    <div class="w-full text-center mb-8 space-y-3">
-      <span id="scene-counter" class="inline-block text-[11px] font-mono font-bold tracking-wider text-[#E95420] bg-[#E95420]/10 px-3 py-1 rounded-full border border-[#E95420]/30">Scene 1 / 10</span>
-      <h1 id="scene-title" class="text-3xl md:text-5xl font-bold tracking-tight gil-text transition-all duration-700 ease-physics transform translate-y-2 opacity-0">
+    <div class="w-full text-center mb-6 space-y-2">
+      <span id="scene-counter" class="inline-block text-[10px] font-mono font-bold tracking-wider text-[#E95420] bg-[#E95420]/10 px-2.5 py-0.5 rounded-full">Scene 1 / 10</span>
+      <h1 id="scene-title" class="text-2xl md:text-4xl font-bold tracking-tight gil-text transition-all duration-700 ease-physics transform translate-y-2 opacity-0">
         How Python's GIL Works
       </h1>
-      <p id="scene-subtitle" class="text-base md:text-lg gil-muted max-w-2xl mx-auto leading-relaxed transition-all duration-700 ease-physics delay-100 transform translate-y-2 opacity-0">
+      <p id="scene-subtitle" class="text-sm md:text-base gil-muted max-w-2xl mx-auto leading-relaxed transition-all duration-700 ease-physics delay-100 transform translate-y-2 opacity-0">
         Why Python threads don't always run in parallel.
       </p>
     </div>
 
     <!-- Central Sandbox/Canvas Screen -->
-    <div id="fullscreen-canvas" class="w-full aspect-[16/9] border gil-border rounded-2xl p-3 relative overflow-hidden flex items-center justify-center shadow-xl">
+    <div id="fullscreen-canvas" class="w-full aspect-[16/9] border gil-border rounded-xl p-3 relative overflow-hidden flex items-center justify-center">
 
       <!-- ==================== SCENE 1: TITLE ==================== -->
       <div id="vis-scene-1" class="absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 pointer-events-none transition-all duration-1000">
@@ -443,40 +443,42 @@
     </div>
 
     <!-- Controls -->
-    <div class="w-full mt-6 space-y-4">
-      <div class="w-full h-1 rounded-full relative overflow-hidden cursor-pointer gil-card-bg" id="timeline-bar">
-        <div class="absolute inset-y-0 left-0 bg-[#E95420] rounded-full w-0 transition-all duration-300" id="timeline-progress"></div>
+    <div class="w-full mt-6 space-y-3" id="controls-wrapper">
+      <div class="w-full cursor-pointer py-1" id="timeline-bar">
+        <div class="h-1 bg-gray-200 dark:bg-gray-700 rounded-full relative overflow-hidden timeline-track">
+          <div class="absolute inset-y-0 left-0 bg-[#E95420] rounded-full w-0 transition-all duration-300" id="timeline-progress"></div>
+        </div>
       </div>
 
-      <div class="flex items-center justify-between gap-4">
-        <div class="flex items-center gap-2">
-          <button id="prev-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center gil-muted gil-btn transition-all" aria-label="Previous scene">
-            <span class="material-symbols-outlined text-xl">navigate_before</span>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-1.5">
+          <button id="prev-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center gil-muted hover:text-[#E95420] transition-all" aria-label="Previous scene">
+            <span class="material-symbols-outlined text-lg">navigate_before</span>
           </button>
-          <button id="play-btn" class="w-12 h-12 rounded-full bg-[#E95420] hover:bg-[#C34113] flex items-center justify-center text-white transition-all shadow-lg" aria-label="Play/Pause">
-            <span class="material-symbols-outlined text-2xl" id="play-icon">play_arrow</span>
+          <button id="play-btn" class="w-9 h-9 rounded-lg bg-[#E95420] hover:bg-[#C34113] flex items-center justify-center text-white transition-all" aria-label="Play/Pause">
+            <span class="material-symbols-outlined text-xl" id="play-icon">play_arrow</span>
           </button>
-          <button id="next-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center gil-muted gil-btn transition-all" aria-label="Next scene">
-            <span class="material-symbols-outlined text-xl">navigate_next</span>
+          <button id="next-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center gil-muted hover:text-[#E95420] transition-all" aria-label="Next scene">
+            <span class="material-symbols-outlined text-lg">navigate_next</span>
           </button>
         </div>
 
-        <button id="fullscreen-btn" class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center gil-muted gil-btn transition-all" aria-label="Toggle Fullscreen">
-          <span class="material-symbols-outlined text-xl">fullscreen</span>
+        <button id="fullscreen-btn" class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center gil-muted hover:text-[#E95420] transition-all" aria-label="Toggle Fullscreen">
+          <span class="material-symbols-outlined text-lg">fullscreen</span>
         </button>
       </div>
 
-      <div class="flex flex-wrap justify-center gap-1.5" id="scene-tags" role="tablist" aria-label="GIL scenes">
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition-all duration-200 bg-[#E95420] text-white border-[#E95420] shadow-sm" data-target="1" role="tab" aria-selected="true">Title</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="2" role="tab" aria-selected="false">Intuition</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="3" role="tab" aria-selected="false">GIL</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="4" role="tab" aria-selected="false">Switching</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="5" role="tab" aria-selected="false">CPU</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="6" role="tab" aria-selected="false">Why GIL</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="7" role="tab" aria-selected="false">I/O</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="8" role="tab" aria-selected="false">Threads</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="9" role="tab" aria-selected="false">MultiProc</button>
-        <button type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-all duration-200 bg-transparent gil-muted gil-border hover:bg-white/5 hover:border-[#E95420] hover:text-[#E95420]" data-target="10" role="tab" aria-selected="false">Summary</button>
+      <div class="flex flex-wrap justify-center gap-1" id="scene-tags" role="tablist" aria-label="GIL scenes">
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-semibold cursor-pointer transition-all duration-200 bg-[#E95420] text-white" data-target="1" role="tab" aria-selected="true">Title</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="2" role="tab" aria-selected="false">Intuition</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="3" role="tab" aria-selected="false">GIL</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="4" role="tab" aria-selected="false">Switching</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="5" role="tab" aria-selected="false">CPU</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="6" role="tab" aria-selected="false">Why GIL</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="7" role="tab" aria-selected="false">I/O</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="8" role="tab" aria-selected="false">Threads</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="9" role="tab" aria-selected="false">MultiProc</button>
+        <button type="button" class="px-2 py-1 rounded-md text-[10px] font-medium cursor-pointer transition-all duration-200 gil-muted hover:text-[#E95420] hover:bg-white/5" data-target="10" role="tab" aria-selected="false">Summary</button>
       </div>
     </div>
 
@@ -935,8 +937,8 @@
         sceneData: json.scenes,
         stepIntervalMs: 1500,
         scenePauseMs: 1000,
-        activeTagClass: ['bg-[#E95420]', 'text-white', 'border-[#E95420]', 'shadow-sm', 'font-semibold'],
-        inactiveTagClass: ['bg-transparent', 'gil-muted', 'gil-border', 'hover:bg-white/5', 'hover:border-[#E95420]', 'hover:text-[#E95420]', 'font-medium'],
+        activeTagClass: ['bg-[#E95420]', 'text-white', 'font-semibold'],
+        inactiveTagClass: ['gil-muted', 'hover:text-[#E95420]', 'hover:bg-white/5', 'font-medium'],
         onSceneAnimation: triggerSceneAnimation
       });
     });

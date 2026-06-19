@@ -17,6 +17,21 @@ function initAnimationPlayer(config) {
   var stepInterval = config.stepIntervalMs || 1800;
   var scenePauseMs = config.scenePauseMs || 1200;
 
+  // ========== SCENE MARKERS ==========
+  function createSceneMarkers() {
+    var track = document.querySelector('.timeline-track');
+    if (!track || TOTAL < 2) return;
+    var dots = track.querySelectorAll('.scene-marker');
+    for (var d = 0; d < dots.length; d++) dots[d].remove();
+    for (var i = 0; i < TOTAL; i++) {
+      var dot = document.createElement('span');
+      var pct = TOTAL > 1 ? (i / (TOTAL - 1)) * 100 : 50;
+      dot.className = 'scene-marker';
+      dot.style.left = pct + '%';
+      track.appendChild(dot);
+    }
+  }
+
   var el = {
     counter: document.getElementById('scene-counter'),
     title: document.getElementById('scene-title'),
@@ -37,7 +52,7 @@ function initAnimationPlayer(config) {
   function createStepDotsContainer() {
     var container = document.createElement('div');
     container.id = 'step-dots';
-    container.className = 'flex items-center justify-center gap-[3px] mt-1 h-2';
+    container.className = 'flex items-center justify-center gap-[2px] mt-0.5 h-1.5';
     if (config.stepDotsParent) {
       config.stepDotsParent.appendChild(container);
     } else if (el.timelineBar && el.timelineBar.parentNode) {
@@ -50,7 +65,7 @@ function initAnimationPlayer(config) {
     if (!el.stepDots) return;
     var html = '';
     for (var i = 0; i < state.totalSteps; i++) {
-      var cls = 'w-[5px] h-[5px] rounded-full transition-all duration-300 ';
+      var cls = 'w-1 h-1 rounded-full transition-all duration-300 ';
       if (i <= state.currentStep) {
         cls += 'bg-orange-600 dark:bg-orange-400';
       } else {
@@ -353,6 +368,7 @@ function initAnimationPlayer(config) {
   }
 
   // ========== INIT ==========
+  createSceneMarkers();
   showScene(1);
 
   return {
