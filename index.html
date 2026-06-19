@@ -110,6 +110,17 @@
       background: rgba(255, 255, 255, 0.2);
     }
 
+    /* Hero decorative elements */
+    .hero-ring {
+      position: absolute;
+      border-radius: 9999px;
+      border: 1px solid rgba(233, 84, 32, 0.06);
+      pointer-events: none;
+    }
+    html.dark .hero-ring {
+      border-color: rgba(233, 84, 32, 0.12);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -163,8 +174,19 @@
   </header>
 
   <!-- ==================== MAIN BANNER & CONTENT ==================== -->
-  <main class="flex-grow grid-bg py-16 px-6">
-    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8">
+  <main class="flex-grow grid-bg py-16 px-6 relative overflow-hidden">
+    <!-- Decorative hero rings (inspired by ubuntu.com's geometric patterns) -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[90vw] max-w-[700px] aspect-square hero-ring" style="border-radius: 50%;"></div>
+      <div class="absolute top-24 left-1/2 -translate-x-1/2 w-[70vw] max-w-[500px] aspect-square hero-ring" style="border-radius: 50%; opacity: 0.6;"></div>
+      <div class="absolute top-40 left-1/2 -translate-x-1/2 w-[50vw] max-w-[350px] aspect-square hero-ring" style="border-radius: 50%; opacity: 0.3;"></div>
+      <!-- Warm radial glow at the top -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl aspect-[2/1] pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(233,84,32,0.06) 0%, transparent 60%);"></div>
+    </div>
+    <!-- Dark mode radial glow override -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl aspect-[2/1] pointer-events-none hidden dark:block" style="background: radial-gradient(ellipse at 50% 0%, rgba(233,84,32,0.12) 0%, transparent 60%);"></div>
+
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8 relative z-10">
       
       <!-- Announcement Tag -->
       <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-50 dark:bg-brand-500/10 border border-brand-100 dark:border-brand-500/20 rounded-full font-bold text-xs text-brand-600 dark:text-brand-400 uppercase tracking-wider">
