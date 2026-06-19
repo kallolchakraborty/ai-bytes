@@ -142,16 +142,29 @@ function initAnimationPlayer(config) {
     showScene(target);
   });
 
-  if (el.fullscreenBtn && el.canvas) {
-    el.fullscreenBtn.addEventListener('click', function () {
-      if (!document.fullscreenElement) {
-        el.canvas.requestFullscreen()['catch'](function (err) {
-          console.error('Fullscreen error:', err);
-        });
-      } else {
-        document.exitFullscreen();
-      }
-    });
+  if (el.canvas) {
+    var stage = document.createElement('div');
+    stage.className = 'fullscreen-stage';
+    var canvChildren = el.canvas.querySelectorAll('[id^="vis-scene-"]');
+    for (var ci = 0; ci < canvChildren.length; ci++) {
+      stage.appendChild(canvChildren[ci]);
+    }
+    el.canvas.appendChild(stage);
+  }
+
+  function toggleFullscreen() {
+    if (!el.canvas) return;
+    if (!document.fullscreenElement) {
+      el.canvas.requestFullscreen()['catch'](function (err) {
+        console.error('Fullscreen error:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  if (el.fullscreenBtn) {
+    el.fullscreenBtn.addEventListener('click', toggleFullscreen);
   }
 
   document.addEventListener('fullscreenchange', function () {
@@ -173,6 +186,9 @@ function initAnimationPlayer(config) {
     } else if (e.key === ' ') {
       e.preventDefault();
       if (state.isPlaying) stopAutoPlay(); else startAutoPlay();
+    } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      toggleFullscreen();
     }
   });
 
