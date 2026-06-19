@@ -457,6 +457,70 @@
       </div>
     </div>
 
+    <!-- ==================== KEY TAKEAWAYS ==================== -->
+    <div class="max-w-6xl mx-auto px-6 mt-16 mb-8">
+      <h2 class="text-lg font-semibold text-[#E8E8E8] mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-[#E95420] text-xl">lightbulb</span>
+        Key Takeaways
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#E95420] text-xl flex-shrink-0 mt-0.5">lock</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">What the GIL Is</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">A mutex that ensures only <em>one</em> thread executes Python bytecode at any moment. Other threads sit idle until the lock is released.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#FFB454] text-xl flex-shrink-0 mt-0.5">swap_horiz</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">Thread Switching</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">The GIL is released every ~5ms (or every 100 bytecode instructions), allowing threads to take turns. Interleaving, not parallelism.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#FF6B6B] text-xl flex-shrink-0 mt-0.5">memory</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">CPU-Bound Penalty</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">Pure computation threads compete for the GIL and run <em>sequentially</em>. More threads can actually make CPU work slower due to switching overhead.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#57D38C] text-xl flex-shrink-0 mt-0.5">input</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">I/O Releases the GIL</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">The GIL is <em>voluntarily dropped</em> during blocking I/O (file reads, network requests). Other threads can run while one thread waits.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#B38CFF] text-xl flex-shrink-0 mt-0.5">construction</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">Why It Exists</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">The GIL protects CPython's shared internals (especially reference counting). It simplifies the interpreter and makes C extensions thread-safe without extra locks.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1A1D25] border border-gray-700 rounded-xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#E95420] text-xl flex-shrink-0 mt-0.5">hub</span>
+            <div>
+              <h3 class="font-semibold text-[#E8E8E8] mb-1">Escape Hatch: Multiprocessing</h3>
+              <p class="text-[#A0A0A0] leading-relaxed">Each process gets its own interpreter and its own GIL. Use <code class="text-[#57D38C]">multiprocessing</code> or <code class="text-[#57D38C]">asyncio</code> to achieve true parallelism with CPU-bound work.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ==================== FOOTER ==================== -->
