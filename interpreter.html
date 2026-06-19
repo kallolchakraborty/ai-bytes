@@ -562,6 +562,19 @@
     // Custom Animation Trigger per Scene
     function triggerSceneAnimation(index) {
       if (index === 1) {
+        const innerDiv = document.querySelector('#vis-scene-1 > div');
+        if (innerDiv) {
+          const children = Array.from(innerDiv.children);
+          children.forEach((child, i) => {
+            child.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+            child.style.opacity = '0';
+            child.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+              child.style.opacity = '1';
+              child.style.transform = 'translateY(0)';
+            }, 400 + i * 300);
+          });
+        }
       }
       
       else if (index === 2) {
@@ -760,7 +773,7 @@
         } else {
           showScene(1);
         }
-      }, 6500); 
+      }, 8000); 
     }
 
     function stopAutoPlay() {
@@ -826,6 +839,22 @@
       const icon = fullscreenBtn?.querySelector('span');
       if (icon) {
         icon.textContent = document.fullscreenElement ? 'fullscreen_exit' : 'fullscreen';
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        stopAutoPlay();
+        if (currentScene > 1) showScene(currentScene - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        stopAutoPlay();
+        if (currentScene < TOTAL_SCENES) showScene(currentScene + 1);
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        if (isPlaying) stopAutoPlay(); else startAutoPlay();
       }
     });
 
