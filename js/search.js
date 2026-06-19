@@ -1,28 +1,20 @@
 // Fuzzy Search & Modal Controller for Quick Reference Docs
 const searchIndex = [
-  // Javascript
-  { title: "JavaScript Variables & Scope", category: "Frontend", url: "docs.html#js-variables", tags: ["javascript", "js", "let", "const", "var", "scope"] },
-  { title: "JavaScript Array Methods", category: "Frontend", url: "docs.html#js-arrays", tags: ["javascript", "js", "map", "filter", "reduce", "arrays"] },
-  
-  // HTML & CSS
-  { title: "CSS Flexbox Cheat Sheet", category: "Frontend", url: "docs.html#css-flexbox", tags: ["css", "flexbox", "layout", "align", "justify"] },
+  // Languages
+  { title: "JavaScript Variables & Scope", category: "Languages", url: "docs.html#js-variables", tags: ["javascript", "js", "let", "const", "var", "scope"] },
+  { title: "JavaScript Array Methods", category: "Languages", url: "docs.html#js-arrays", tags: ["javascript", "js", "map", "filter", "reduce", "arrays"] },
+  { title: "Go Interfaces & Structs", category: "Languages", url: "docs.html#go-interfaces", tags: ["go", "golang", "struct", "interface", "oop"] },
+  { title: "Python Context Managers", category: "Languages", url: "docs.html#python-context", tags: ["python", "with", "context", "files", "resource"] },
 
-  // Git
-  { title: "Common Git Commands", category: "Tools", url: "docs.html#git-commands", tags: ["git", "commit", "push", "pull", "merge", "rebase"] },
+  // System Internals
+  { title: "How Python's GIL Works", category: "System Internals", url: "docs.html#gil", tags: ["python", "gil", "thread", "concurrency", "multiprocessing", "lock"] },
+  { title: "How a Compiler Works", category: "System Internals", url: "docs.html#compiler", tags: ["compiler", "compile", "pipeline", "ast", "lexer", "parser"] },
+  { title: "How an Interpreter Works", category: "System Internals", url: "docs.html#interpreter", tags: ["interpreter", "interpret", "runtime", "execution", "repl"] },
 
-  // DevOps / System
-  { title: "Docker Container Lifecycle", category: "DevOps", url: "docs.html#docker-lifecycle", tags: ["docker", "container", "run", "stop", "exec"] },
-  
-  // Backend Languages
-  { title: "Go Interfaces & Structs", category: "Backend", url: "docs.html#go-interfaces", tags: ["go", "golang", "struct", "interface", "oop"] },
-  { title: "Python Context Managers", category: "Backend", url: "docs.html#python-context", tags: ["python", "with", "context", "files", "resource"] },
-
-  // Python
-  { title: "How Python's GIL Works", category: "Python", url: "docs.html#gil", tags: ["python", "gil", "thread", "concurrency", "multiprocessing", "lock"] },
-
-  // Programming Concepts
-  { title: "How a Compiler Works", category: "Programming", url: "docs.html#compiler", tags: ["compiler", "compile", "pipeline", "ast", "lexer", "parser"] },
-  { title: "How an Interpreter Works", category: "Programming", url: "docs.html#interpreter", tags: ["interpreter", "interpret", "runtime", "execution", "repl"] }
+  // Developer Tools
+  { title: "Common Git Commands", category: "Developer Tools", url: "docs.html#git-commands", tags: ["git", "commit", "push", "pull", "merge", "rebase"] },
+  { title: "Docker Container Lifecycle", category: "Developer Tools", url: "docs.html#docker-lifecycle", tags: ["docker", "container", "run", "stop", "exec"] },
+  { title: "CSS Flexbox Cheat Sheet", category: "Developer Tools", url: "docs.html#css-flexbox", tags: ["css", "flexbox", "layout", "align", "justify"] }
 ];
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -106,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (items.length === 0) {
       searchResults.innerHTML = `
         <div class="p-8 text-center text-slate-500 dark:text-slate-400 font-mono text-sm">
-          No matches found. Try searching for "git", "flexbox", or "docker".
+          No matches found. Try searching for "git", "python", or "docker".
         </div>
       `;
       return;

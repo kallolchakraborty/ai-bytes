@@ -169,10 +169,20 @@
     <aside id="left-sidebar" class="lg:w-64 lg:sticky lg:top-24 lg:h-[calc(100vh-120px)] overflow-y-auto shrink-0 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 pb-8 lg:pb-0 pr-0 lg:pr-6">
       <div class="space-y-6">
         
-        <!-- Backend -->
+        <!-- Languages -->
         <div>
-          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Backend</h4>
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Languages</h4>
           <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800">
+            <li>
+              <a href="#js-variables" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
+                JS Scope & Variables
+              </a>
+            </li>
+            <li>
+              <a href="#js-arrays" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
+                JS Array Methods
+              </a>
+            </li>
             <li>
               <a href="#go-interfaces" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
                 Go Interfaces
@@ -183,18 +193,18 @@
                 Python Context Managers
               </a>
             </li>
+          </ul>
+        </div>
+
+        <!-- System Internals -->
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">System Internals</h4>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800">
             <li>
               <a href="#gil" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
                 How the GIL Works
               </a>
             </li>
-          </ul>
-        </div>
-
-        <!-- Programming Concepts -->
-        <div>
-          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Programming</h4>
-          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800">
             <li>
               <a href="#compiler" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
                 How a Compiler Works
@@ -203,6 +213,28 @@
             <li>
               <a href="#interpreter" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
                 How an Interpreter Works
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Developer Tools -->
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Developer Tools</h4>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800">
+            <li>
+              <a href="#git-commands" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
+                Git Command Cheat Sheet
+              </a>
+            </li>
+            <li>
+              <a href="#docker-lifecycle" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
+                Docker Lifecycle
+              </a>
+            </li>
+            <li>
+              <a href="#css-flexbox" class="sidebar-link pl-4 block border-l-2 border-transparent hover:text-brand-500 hover:border-brand-500 transition-all py-1">
+                CSS Flexbox
               </a>
             </li>
           </ul>
@@ -231,7 +263,7 @@
     <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
       <div class="flex items-center gap-3">
         <img src="assets/logo.svg" alt="Quick Reference Logo" class="w-6 h-6 object-contain opacity-60" />
-        <span>&copy; 2026 Quick Reference. Open documentation platform.</span>
+        <span>Made with ❤️ by <a href="https://www.linkedin.com/in/kallol-chakraborty-9728a699/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-500 transition-colors">Kallol Chakraborty</a></span>
       </div>
       <div class="flex gap-6 font-medium">
         <a href="docs.html" class="hover:text-brand-500 transition-colors">Docs</a>
