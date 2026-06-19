@@ -1,10 +1,7 @@
 // Dynamic Content Loader for Quick Reference Documentation Portal
 const routeMap = {
   '#python-history': 'content/python/python-history.json',
-  '#js-arrays': 'content/frontend/javascript-arrays.json',
   '#git-commands': 'content/devops/git-commands.json',
-  '#go-interfaces': 'content/backend/go-interfaces.json',
-  '#python-context': 'content/backend/python-context.json',
   '#gil': 'content/python/gil.json',
   '#compiler': 'content/programming/compiler.json',
   '#interpreter': 'content/programming/interpreter.json'
