@@ -136,10 +136,18 @@ Content pages are JSON files loaded dynamically by `js/loader.js`. Each file has
   "category": "Python",
   "subcategory": "History",
   "description": "A brief overview...",
-  "codeBlock": "A code snippet or timeline...",
-  "details": "Deep dive explanation..."
+  "codeBlock": "A code snippet...",
+  "details": "Deep dive explanation...",
+  "timeline": [
+    { "year": "1989", "event": "Work on Python begins" },
+    { "year": "1991", "event": "Python 0.9.0 released" }
+  ]
 }
 ```
+
+- `codeBlock` is rendered in a syntax block with a copy button.
+- `timeline` (optional) renders an animated alternating timeline with staggered fade-in instead of the code block. Each entry is displayed with a year badge and event text.
+- `details` is rendered in a "Deep Dive" info box.
 
 Routes map hash anchors to JSON paths in `js/loader.js`. The default route (when no hash is present) falls back to `#git-commands`.
 

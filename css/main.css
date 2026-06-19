@@ -128,6 +128,75 @@ html.dark .grid-bg {
   perspective: 1000px;
 }
 
+/* ========== Timeline Animation ========== */
+.timeline-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #E95420;
+  transform: translateX(-50%);
+}
+
+html.dark .timeline-container::before {
+  background: rgba(233, 84, 32, 0.5);
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 16px 24px;
+  align-self: flex-start;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: timelineFadeIn 0.6s ease forwards;
+}
+
+.timeline-item-right {
+  align-self: flex-end;
+  transform: translateX(20px);
+}
+
+@keyframes timelineFadeIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.timeline-year {
+  display: inline-block;
+  background: #E95420;
+  color: #FFFFFF;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  margin-bottom: 6px;
+}
+
+html.dark .timeline-year {
+  background: rgba(233, 84, 32, 0.8);
+}
+
+.timeline-event {
+  display: block;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+html.dark .timeline-event {
+  color: #D1D5DB;
+}
+
 /* ========== Reduced Motion ========== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

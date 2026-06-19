@@ -36,6 +36,21 @@ async function loadContent(hash) {
           <iframe src="${data.id}.html" class="w-full h-full border-none" allowfullscreen title="${pageTitles[data.id] || 'Interactive visualization'}"></iframe>
         </div>
       `;
+    } else if (data.timeline) {
+      var items = '';
+      for (var ti = 0; ti < data.timeline.length; ti++) {
+        var t = data.timeline[ti];
+        var cls = ti % 2 === 0 ? 'timeline-item' : 'timeline-item timeline-item-right';
+        var delay = ti * 120;
+        items += '<div class="' + cls + '" style="animation-delay:' + delay + 'ms">' +
+          '<span class="timeline-year">' + t.year + '</span>' +
+          '<span class="timeline-event">' + t.event + '</span>' +
+        '</div>';
+      }
+      embedCode = '<div id="section-syntax" class="scroll-mt-24">' +
+        '<div class="timeline-container">' + items + '</div>' +
+        '<div class="mt-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-4 font-mono text-sm leading-relaxed overflow-x-auto">' +
+        '<pre><code class="text-slate-800 dark:text-slate-200">' + escapeHtml(data.codeBlock) + '</code></pre></div></div>';
     } else {
       embedCode = `
         <div id="section-syntax" class="scroll-mt-24 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 font-mono text-sm leading-relaxed overflow-x-auto relative group">
