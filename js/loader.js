@@ -78,7 +78,7 @@ async function loadContent(hash) {
           <span class="material-symbols-outlined text-brand-500 shrink-0">info</span>
           <div>
             <h4 class="font-bold text-slate-900 dark:text-white mb-1">Deep Dive</h4>
-            <p>${data.details}</p>
+            ${data.details}
           </div>
         </div>
       </section>
