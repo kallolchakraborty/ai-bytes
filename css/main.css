@@ -356,6 +356,10 @@ html.dark pre[class*="language-"] {
 code[class*="language-"] { text-shadow: none !important; color: inherit !important; font-family: 'JetBrains Mono', monospace !important; font-size: inherit !important; }
 :not(pre) > code[class*="language-"] { background: transparent !important; padding: 0 !important; }
 
+.token {
+  background: transparent !important;
+}
+
 html.dark .token.operator { color: #E8E8E8; }
 html.dark .token.punctuation { color: #A0A0A0; }
 html.dark .token.comment { color: #6B7280; }
