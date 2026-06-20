@@ -1,7 +1,12 @@
 // Fuzzy Search & Modal Controller for Quick Reference Docs
 const searchIndex = [
   // Python
-  { title: "Python Basics", category: "Python", url: "docs.html#python-basics", tags: ["python", "basics", "variables", "functions", "lists", "dictionaries", "control", "flow"] },
+  { title: "Basics: Data Types & Operations", category: "Python", url: "docs.html#py-basics-datatypes", tags: ["python", "basics", "data", "types", "int", "float", "str", "bool", "operators"] },
+  { title: "Basics: Loops & Control Flow", category: "Python", url: "docs.html#py-basics-loops", tags: ["python", "basics", "loops", "for", "while", "control", "flow", "if"] },
+  { title: "Basics: Input & Output", category: "Python", url: "docs.html#py-basics-io", tags: ["python", "basics", "input", "output", "print", "formatting", "fstring"] },
+  { title: "Basics: Data Structures", category: "Python", url: "docs.html#py-basics-ds", tags: ["python", "basics", "list", "tuple", "set", "dict", "comprehension"] },
+  { title: "Basics: File Handling", category: "Python", url: "docs.html#py-basics-files", tags: ["python", "basics", "file", "json", "csv", "pathlib", "io"] },
+  { title: "Basics: API Handling", category: "Python", url: "docs.html#py-basics-api", tags: ["python", "basics", "api", "http", "json", "xml", "requests"] },
   { title: "History of Python", category: "Python", url: "docs.html#python-history", tags: ["python", "history", "guido", "van", "rossum", "timeline", "evolution"] },
 
   // System Internals

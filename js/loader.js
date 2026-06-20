@@ -1,6 +1,11 @@
 // Dynamic Content Loader for Quick Reference Documentation Portal
 const routeMap = {
-  '#python-basics': 'content/python/python-basics.json',
+  '#py-basics-datatypes': 'content/python/basics/datatypes.json',
+  '#py-basics-loops': 'content/python/basics/loops.json',
+  '#py-basics-io': 'content/python/basics/io.json',
+  '#py-basics-ds': 'content/python/basics/ds.json',
+  '#py-basics-files': 'content/python/basics/files.json',
+  '#py-basics-api': 'content/python/basics/api.json',
   '#python-history': 'content/python/python-history.json',
   '#git-commands': 'content/devops/git-commands.json',
   '#gil': 'content/python/gil.json',
