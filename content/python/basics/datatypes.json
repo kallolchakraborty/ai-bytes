@@ -14,7 +14,7 @@
     {
       "title": "Text Sequence Type (str)",
       "description": "Strings are immutable sequences of Unicode characters. They can be declared with single, double, or triple quotes (for multi-line strings).",
-      "codeBlock": "# Single/Double quoted strings\nname = \"Alice\"\nchar = 'A'\n\n# Multi-line strings\nmulti = \"\"\"This is a\nmulti-line string\"\"\"\n\n# Escaping and Raw Strings\nescaped = \"tab:\\there\" # interprets \\t as a tab\nraw = r\"C:\\path\\to\\file\" # treats backslashes as literals"
+      "codeBlock": "# Single/Double quoted strings\nname = \"Alice\"\nchar = 'A'\n\n# Multi-line strings\nmulti = \"\"\"This is a\\nmulti-line string\"\"\"\n\n# Escaping and Raw Strings\nescaped = \"tab:\\ttab\" # interprets \\t as a tab\nraw = r\"C:\\path\\to\\file\" # treats backslashes as literals"
     },
     {
       "title": "Boolean and None Types",
