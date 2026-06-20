@@ -7,14 +7,13 @@ const routeMap = {
   '#py-basics-files': 'content/python/basics/files.json',
   '#py-basics-api': 'content/python/basics/api.json',
   '#python-history': 'content/python/python-history.json',
-  '#git-commands': 'content/devops/git-commands.json',
   '#gil': 'content/python/gil.json',
   '#compiler': 'content/programming/compiler.json',
   '#interpreter': 'content/programming/interpreter.json'
 };
 
 async function loadContent(hash) {
-  const path = routeMap[hash] || routeMap['#git-commands'];
+  const path = routeMap[hash] || routeMap['#python-history'];
   const contentArea = document.getElementById('docs-dynamic-content');
   if (!contentArea) return;
 
@@ -198,7 +197,7 @@ function escapeHtml(text) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const initialHash = window.location.hash || '#git-commands';
+  const initialHash = window.location.hash || '#python-history';
   loadContent(initialHash);
 });
 

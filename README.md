@@ -151,7 +151,7 @@ Content pages are JSON files loaded dynamically by `js/loader.js`. Each file has
 - `timeline` (optional) renders an animated alternating timeline instead of a code block.
 - `details` is rendered in a "Deep Dive" info box with a left accent bar.
 
-Routes map hash anchors to JSON paths in `js/loader.js`. The default route (when no hash is present) falls back to `#git-commands`.
+Routes map hash anchors to JSON paths in `js/loader.js`. The default route (when no hash is present) falls back to `#python-history`.
 
 ## Search
 

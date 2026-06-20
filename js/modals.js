@@ -154,7 +154,6 @@
     { title: "How Python's GIL Works", category: "System Internals", url: "docs.html#gil", tags: ["python", "gil", "thread", "concurrency", "multiprocessing", "lock"] },
     { title: "How a Compiler Works", category: "System Internals", url: "docs.html#compiler", tags: ["compiler", "compile", "pipeline", "ast", "lexer", "parser"] },
     { title: "How an Interpreter Works", category: "System Internals", url: "docs.html#interpreter", tags: ["interpreter", "interpret", "runtime", "execution", "repl"] },
-    { title: "Common Git Commands", category: "Developer Tools", url: "docs.html#git-commands", tags: ["git", "commit", "push", "pull", "merge", "rebase"] }
   ];
 
   function openSearchModal() {
