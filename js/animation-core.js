@@ -34,6 +34,7 @@ function initAnimationPlayer(config) {
 
   var el = {
     progress: document.getElementById('timeline-progress'),
+    subtitle: document.getElementById('scene-subtitle'),
     playBtn: document.getElementById('play-btn'),
     playIcon: document.getElementById('play-icon'),
     prevBtn: document.getElementById('prev-btn'),
@@ -102,6 +103,22 @@ function initAnimationPlayer(config) {
         tag.setAttribute('aria-selected', isTarget ? 'true' : 'false');
       }
     });
+
+    if (el.subtitle) {
+      el.subtitle.style.transition = 'none';
+      el.subtitle.style.opacity = '0';
+      el.subtitle.style.transform = 'translateY(4px)';
+      void el.subtitle.offsetHeight;
+      el.subtitle.style.transition = '';
+    }
+
+    setTimeout(function () {
+      if (el.subtitle && data && data[sceneIndex - 1]) {
+        el.subtitle.textContent = data[sceneIndex - 1].subtitle;
+        el.subtitle.style.opacity = '1';
+        el.subtitle.style.transform = 'translateY(0)';
+      }
+    }, 300);
 
     var activeVis = document.getElementById('vis-scene-' + sceneIndex);
     if (activeVis) {
