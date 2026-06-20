@@ -449,6 +449,36 @@ function escapeHtml(text) {
     .replace(/'/g, "&#039;");
 }
 
+function showToast(message) {
+  const existingToast = document.getElementById('clipboard-toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  const toast = document.createElement('div');
+  toast.id = 'clipboard-toast';
+  toast.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-slate-900/90 dark:bg-slate-800/90 backdrop-blur-md text-white border border-slate-700/50 px-4 py-2.5 rounded-xl shadow-xl text-sm font-sans font-medium transition-all duration-300 transform translate-y-10 opacity-0';
+  toast.innerHTML = `
+    <span class="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>
+    <span>${message}</span>
+  `;
+
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(function() {
+    toast.classList.remove('translate-y-10', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+  });
+
+  setTimeout(function() {
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('translate-y-10', 'opacity-0');
+    setTimeout(function() {
+      toast.remove();
+    }, 300);
+  }, 2200);
+}
+
 function copyCode(btn) {
   const codeEl = btn.parentElement.querySelector('code');
   if (!codeEl) return;
@@ -456,6 +486,7 @@ function copyCode(btn) {
     const originalHTML = btn.innerHTML;
     btn.innerHTML = '<span class="material-symbols-outlined text-sm text-emerald-500">check</span> Copied!';
     btn.disabled = true;
+    showToast('Code copied to clipboard!');
     setTimeout(function() {
       btn.innerHTML = originalHTML;
       btn.disabled = false;
