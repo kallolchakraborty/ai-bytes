@@ -502,8 +502,7 @@
       expTitle.textContent = `Step ${currentStep + 1} of 8: ${stepsData[currentStep].title}`;
       expDesc.innerHTML = `<span class="font-semibold block text-slate-800 dark:text-white text-xs mb-1.5">${stepsData[currentStep].subtitle}</span>` + stepsData[currentStep].desc;
 
-      // Auto scroll panel
-      document.getElementById("explanation-panel").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // Auto scroll panel removed to keep the animation canvas centered in the viewport
 
       // Reset specific scene animation variables
       resetAnimations(currentStep);
