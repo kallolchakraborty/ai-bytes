@@ -122,12 +122,22 @@ html.dark .hero-ring {
   border-color: rgba(233, 84, 32, 0.12);
 }
 
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes logo-pulse-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 8px rgba(233, 84, 32, 0.2)) saturate(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.08);
+    filter: drop-shadow(0 0 24px rgba(233, 84, 32, 0.65)) saturate(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    filter: drop-shadow(0 0 8px rgba(233, 84, 32, 0.2)) saturate(1);
+  }
 }
 .logo-circular-spin {
-  animation: spin-slow 20s linear infinite;
+  animation: logo-pulse-spin 12s ease-in-out infinite;
 }
 
 /* ========== Index: Grid Background ========== */

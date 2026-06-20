@@ -161,20 +161,20 @@ async function loadContent(hash) {
           <div id="section-differences" class="scroll-mt-24">
             <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400 mb-3 mt-6">Differences: Multithreading vs Concurrency</h4>
             <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-[#0E1115]">
-              <table class="w-full text-xs text-left border-collapse">
+              <table class="w-full text-xs text-left border-collapse table-fixed">
                 <thead class="bg-slate-50 dark:bg-slate-900/60 font-bold font-mono border-b border-slate-200 dark:border-slate-800">
                   <tr>
-                    <th class="p-3 text-slate-700 dark:text-slate-200 w-1/4">Dimension</th>
-                    <th class="p-3 text-slate-700 dark:text-slate-200 w-3/8">Concurrency</th>
-                    <th class="p-3 text-slate-700 dark:text-slate-200 w-3/8">Multithreading</th>
+                    <th class="p-3 text-slate-700 dark:text-slate-200 w-[20%] align-top">Dimension</th>
+                    <th class="p-3 text-slate-700 dark:text-slate-200 w-[40%] align-top">Concurrency</th>
+                    <th class="p-3 text-slate-700 dark:text-slate-200 w-[40%] align-top">Multithreading</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
                   ${data.diffTable.map(row => `
                     <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/20">
-                      <td class="p-3 font-mono font-semibold text-orange-600">${row.dimension}</td>
-                      <td class="p-3 text-slate-600 dark:text-slate-300 text-xs">${row.concurrency}</td>
-                      <td class="p-3 text-slate-600 dark:text-slate-300 text-xs">${row.multithreading}</td>
+                      <td class="p-3 font-mono font-semibold text-orange-600 align-top">${row.dimension}</td>
+                      <td class="p-3 text-slate-600 dark:text-slate-300 text-xs align-top leading-relaxed">${row.concurrency}</td>
+                      <td class="p-3 text-slate-600 dark:text-slate-300 text-xs align-top leading-relaxed">${row.multithreading}</td>
                     </tr>
                   `).join('')}
                 </tbody>
