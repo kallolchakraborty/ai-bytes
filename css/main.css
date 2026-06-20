@@ -263,7 +263,8 @@ html.dark {
 .timeline-track::before {
   content: '';
   position: absolute;
-  left: 0.625rem;
+  left: 1rem;
+  transform: translateX(-50%);
   top: 0.5rem;
   bottom: 0.5rem;
   width: 2px;
@@ -290,7 +291,7 @@ html.dark .timeline-track::before {
 
 .timeline-bullet {
   position: absolute;
-  left: -2.375rem;
+  left: -1.625rem;
   top: 0.625rem;
   width: 1.25rem;
   height: 1.25rem;
