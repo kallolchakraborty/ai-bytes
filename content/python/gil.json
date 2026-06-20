@@ -1,5 +1,6 @@
 {
   "id": "gil",
+  "language": "python",
   "title": "How Python's GIL Works",
   "category": "Python",
   "subcategory": "Concurrency",

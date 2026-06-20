@@ -303,48 +303,6 @@
         </div>
       </div>
 
-      <!-- STEP 8: Summary Matrix -->
-      <div id="scene-8" class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 opacity-0 pointer-events-none transition-opacity duration-500">
-        <div class="w-full max-w-3xl overflow-x-auto">
-          <table class="w-full text-xs text-left border-collapse border border-slate-200 dark:border-slate-800">
-            <thead>
-              <tr class="bg-slate-100 dark:bg-slate-900/60 font-bold font-mono">
-                <th class="border border-slate-200 dark:border-slate-800 p-2.5">Model</th>
-                <th class="border border-slate-200 dark:border-slate-800 p-2.5">Concurrency Type</th>
-                <th class="border border-slate-200 dark:border-slate-800 p-2.5">GIL Restriction</th>
-                <th class="border border-slate-200 dark:border-slate-800 p-2.5">Ideal For</th>
-              </tr>
-            </thead>
-            <tbody class="font-mono">
-              <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/20">
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 font-bold text-orange-600">Synchronous</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-slate-500">None (Sequential)</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-slate-500">No</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5">Simple scripts, no execution block concerns</td>
-              </tr>
-              <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/20">
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 font-bold text-blue-500">Threading</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-blue-600">Preemptive Context Switch</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-red-500">Yes (CPython restricted)</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5">I/O bound apps, scraping, socket listening</td>
-              </tr>
-              <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/20">
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 font-bold text-green-500">Asyncio</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-green-600">Cooperative Event Loop</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-slate-500">No (Single-Threaded)</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5">High concurrent network connections, chat API</td>
-              </tr>
-              <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/20">
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 font-bold text-purple-500">Multiprocess</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-purple-600">Parallel Execution</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5 text-green-500">No (Multiple GILs)</td>
-                <td class="border border-slate-200 dark:border-slate-800 p-2.5">CPU bound tasks, matrix math, raw computations</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
 
     <!-- Timeline Scrubber & Controller -->
@@ -446,11 +404,6 @@
         title: "Multiprocessing Parallelism",
         subtitle: "Separate OS Processes run in parallel across separate CPU cores.",
         desc: "To bypass the GIL and utilize multiple cores for CPU-heavy tasks, use Multiprocessing. Each process gets its own independent CPython interpreter and memory GIL, allowing true simultaneous execution on Cores 1 and 2."
-      },
-      {
-        title: "Concurrency Matrix Summary",
-        subtitle: "Review guidelines to choose between Threading, Asyncio, and Multiprocessing.",
-        desc: "Choose Threading/Asyncio for network I/O-bound workloads (web APIs, chat clients). Choose Multiprocessing for heavy math operations, data conversions, or multi-core parallel scaling."
       }
     ];
 
@@ -480,7 +433,7 @@
       // Save current position (kept for runtime state only or removed completely)
 
       // Hide all scenes
-      for (let i = 1; i <= 8; i++) {
+      for (let i = 1; i <= 7; i++) {
         const el = document.getElementById("scene-" + i);
         if (el) {
           el.classList.add("opacity-0", "pointer-events-none");
@@ -495,8 +448,8 @@
 
       // Update Controls
       scrubber.value = currentStep;
-      progressPercent.textContent = Math.round((currentStep / 7) * 100) + "%";
-      expTitle.textContent = `Step ${currentStep + 1} of 8: ${stepsData[currentStep].title}`;
+      progressPercent.textContent = Math.round((currentStep / 6) * 100) + "%";
+      expTitle.textContent = `Step ${currentStep + 1} of 7: ${stepsData[currentStep].title}`;
       expDesc.innerHTML = `<span class="font-semibold block text-slate-800 dark:text-white text-xs mb-1.5">${stepsData[currentStep].subtitle}</span>` + stepsData[currentStep].desc;
 
       // Auto scroll panel removed to keep the animation canvas centered in the viewport
@@ -708,7 +661,7 @@
       const interval = parseInt(speedSelect.value, 10);
       autoPlayTimer = setTimeout(() => {
         if (!isPlaying) return;
-        if (currentStep < 7) {
+        if (currentStep < 6) {
           currentStep++;
         } else {
           currentStep = 0;
@@ -739,7 +692,7 @@
 
     nextBtn.addEventListener("click", () => {
       stopLoop();
-      if (currentStep < 7) {
+      if (currentStep < 6) {
         currentStep++;
         updateStepView();
       }
@@ -771,7 +724,7 @@
         if (currentStep > 0) { currentStep--; updateStepView(); }
       } else if (e.key === "ArrowRight") {
         stopLoop();
-        if (currentStep < 7) { currentStep++; updateStepView(); }
+        if (currentStep < 6) { currentStep++; updateStepView(); }
       } else if (e.key === " ") {
         e.preventDefault();
         if (isPlaying) stopLoop(); else startLoop();

@@ -1,5 +1,6 @@
 {
   "id": "concurrency",
+  "language": "python",
   "title": "Multithreading & Concurrency",
   "category": "Python",
   "subcategory": "Basics",
