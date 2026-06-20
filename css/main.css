@@ -111,7 +111,7 @@ html.dark #fullscreen-canvas:-webkit-full-screen {
 html.dark .accent-node { background-color: #1A1D25; border-color: #F5A389; color: #F5A389; }
 html.dark .accent-node-fill { background-color: rgba(233, 84, 32, 0.1); border-color: #F5A389; color: #F5A389; }
 
-/* ========== Index: Hero Rings ========== */
+/* ========== Index: Hero Rings & Animations ========== */
 .hero-ring {
   position: absolute;
   border-radius: 9999px;
@@ -120,6 +120,14 @@ html.dark .accent-node-fill { background-color: rgba(233, 84, 32, 0.1); border-c
 }
 html.dark .hero-ring {
   border-color: rgba(233, 84, 32, 0.12);
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.logo-circular-spin {
+  animation: spin-slow 20s linear infinite;
 }
 
 /* ========== Index: Grid Background ========== */
