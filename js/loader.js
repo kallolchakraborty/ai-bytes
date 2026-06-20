@@ -185,10 +185,11 @@ async function loadContent(hash) {
     });
 
   } catch (error) {
+    console.error("Error in loadContent:", error);
     contentArea.innerHTML = `
       <div class="p-6 border-2 border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-950/10 rounded-xl text-red-600 dark:text-red-400 text-sm">
         <h3 class="font-bold mb-1">Error Loading Document</h3>
-        <p>Failed to load the requested study guide from path: ${path}. Please check your connection or try again.</p>
+        <p>Failed to load the requested study guide from path: ${path}. Error: ${error.message}</p>
       </div>
     `;
   }
