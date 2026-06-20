@@ -1,5 +1,6 @@
 {
   "id": "compiler",
+  "language": "plaintext",
   "title": "How a Compiler Works",
   "category": "Programming",
   "subcategory": "Concepts",

@@ -1,5 +1,6 @@
 {
   "id": "interpreter",
+  "language": "plaintext",
   "title": "How an Interpreter Works",
   "category": "Programming",
   "subcategory": "Concepts",
