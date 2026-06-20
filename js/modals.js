@@ -78,7 +78,7 @@
     if (!modal) return;
 
     var url = window.location.href;
-    var title = document.title || 'Quick Reference';
+    var title = document.title || 'Quick Bytes';
 
     if (input) input.value = url;
     if (confirm) confirm.classList.add('hidden');

@@ -1,4 +1,4 @@
-// Dynamic Content Loader for Quick Reference Documentation Portal
+// Dynamic Content Loader for Quick Bytes Documentation Portal
 const routeMap = {
   '#py-basics-datatypes': 'content/python/basics/datatypes.json',
   '#py-basics-loops': 'content/python/basics/loops.json',
