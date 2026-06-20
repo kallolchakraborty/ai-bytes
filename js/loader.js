@@ -6,6 +6,7 @@ const routeMap = {
   '#py-basics-ds': 'content/python/basics/ds.json',
   '#py-basics-files': 'content/python/basics/files.json',
   '#py-basics-api': 'content/python/basics/api.json',
+  '#py-basics-concurrency': 'content/python/basics/concurrency.json',
   '#python-history': 'content/python/python-history.json',
   '#gil': 'content/python/gil.json',
   '#compiler': 'content/programming/compiler.json',
@@ -35,8 +36,8 @@ async function loadContent(hash) {
     // Render content dynamically
     const langClass = data.language ? 'language-' + data.language : 'text-slate-800 dark:text-slate-200';
     let embedCode = '';
-    if (data.id === 'compiler' || data.id === 'interpreter' || data.id === 'gil') {
-      const pageTitles = { compiler: 'How a Compiler Works', interpreter: 'How an Interpreter Works', gil: "How Python's GIL Works" };
+    if (data.id === 'compiler' || data.id === 'interpreter' || data.id === 'gil' || data.id === 'concurrency') {
+      const pageTitles = { compiler: 'How a Compiler Works', interpreter: 'How an Interpreter Works', gil: "How Python's GIL Works", concurrency: 'Python Concurrency Visualizer' };
       embedCode = `
         <div class="w-full aspect-[16/12] border border-blue-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-[#0F1115]">
           <iframe src="${data.id}.html" class="w-full h-full border-none" allowfullscreen aria-label="${pageTitles[data.id] || 'Interactive visualization'}"></iframe>
