@@ -54,6 +54,8 @@
       cursor: pointer;
       -webkit-appearance: none;
     }
+    /* Disable main documentation page background line selectors inside iframe canvas */
+    .timeline-container::before { display: none !important; }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
