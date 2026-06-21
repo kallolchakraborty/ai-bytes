@@ -465,19 +465,6 @@
     document.body.style.overflow = '';
   }
 
-  // Intercept any docs-related link click
-  document.addEventListener('click', function(e) {
-    var link = e.target.closest('a');
-    if (!link) return;
-    
-    var text = link.textContent.trim().toLowerCase();
-    
-    if (text === 'docs' || text === 'documentation' || text === 'back to docs') {
-      e.preventDefault();
-      openReadmeModal();
-    }
-  });
-
   document.addEventListener('click', function(e) {
     if (e.target.id === 'close-readme-btn' || e.target.closest('#close-readme-btn')) {
       closeReadmeModal();
