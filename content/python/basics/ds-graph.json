@@ -1,0 +1,21 @@
+{
+  "id": "py-ds-graph",
+  "title": "Graphs & Networks",
+  "category": "Python",
+  "subcategory": "Data Structures",
+  "description": "Network modeling in Python: Adjacency Lists, Adjacency Matrices, and pathfinding traversals (Depth-First Search & Breadth-First Search).",
+  "language": "python",
+  "sections": [
+    {
+      "title": "Adjacency List Representation",
+      "description": "Graphs consist of vertices (nodes) and edges (relations). In Python, an adjacency list is represented using a dictionary where keys are vertices and values are lists/sets of adjacent nodes.",
+      "codeBlock": "# Graph Representation\ngraph = {\n    'A': ['B', 'C'],\n    'B': ['D', 'E'],\n    'C': ['F'],\n    'D': [],\n    'E': ['F'],\n    'F': []\n}\n\nprint(graph['A'])      # ['B', 'C'] (Neighbors of A)"
+    },
+    {
+      "title": "Graph Traversals (DFS & BFS)",
+      "description": "DFS explores nodes by going deep along each branch before backtracking (using stack/recursion). BFS explores all neighbors at the current depth level before moving deeper (using queue).",
+      "codeBlock": "# 1. Depth-First Search (DFS)\ndef dfs(node, visited, path):\n    if node not in visited:\n        visited.add(node)\n        path.append(node)\n        for neighbor in graph[node]:\n            dfs(neighbor, visited, path)\n\nvisited_dfs = set()\ndfs_path = []\ndfs('A', visited_dfs, dfs_path)\nprint(dfs_path)        # ['A', 'B', 'D', 'E', 'F', 'C']\n\n# 2. Breadth-First Search (BFS)\nfrom collections import deque\ndef bfs(start):\n    visited = {start}\n    queue = deque([start])\n    path = []\n    while queue:\n        node = queue.popleft()\n        path.append(node)\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n    return path\n\nprint(bfs('A'))        # ['A', 'B', 'C', 'D', 'E', 'F']"
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Graph Representations:</strong> Graphs are represented either by Adjacency Matrices (2D arrays indicating edge connections) or Adjacency Lists. Adjacency lists are highly space-efficient for sparse graphs (graphs where the number of edges is much less than V^2), making dictionary-of-lists representations standard in Python.</p><p class=\"mb-3\"><strong>Pathfinding Algorithms:</strong> BFS guarantees finding the shortest path between two nodes in an unweighted graph, making it perfect for peer-to-peer connection mapping. DFS is utilized in cycle detection, topological sorting (e.g. build system dependencies), and finding strongly connected components.</p>"
+}

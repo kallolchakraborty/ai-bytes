@@ -1,0 +1,21 @@
+{
+  "id": "py-ds-linkedlist",
+  "title": "Linked Lists",
+  "category": "Python",
+  "subcategory": "Data Structures",
+  "description": "An in-depth look at Singly and Doubly Linked Lists in Python, covering pointer traversals, node manipulation, and reference models.",
+  "language": "python",
+  "sections": [
+    {
+      "title": "Singly Linked List",
+      "description": "A Singly Linked List is a linear data structure where each node points to the next node in the sequence. It allows efficient insertion and deletion at head, but requires O(N) time to search or access arbitrary elements.",
+      "codeBlock": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\n# Helper to print linked list\ndef print_list(head):\n    current = head\n    path = []\n    while current:\n        path.append(str(current.val))\n        current = current.next\n    print(\" -> \".join(path))\n\n# Constructing: 10 -> 20 -> 30\nhead = ListNode(10)\nhead.next = ListNode(20)\nhead.next.next = ListNode(30)\n\nprint_list(head)       # 10 -> 20 -> 30"
+    },
+    {
+      "title": "Doubly Linked List",
+      "description": "A Doubly Linked List nodes contain references to both the next and the previous nodes. This enables bi-directional traversal and O(1) deletions if the node pointer is known.",
+      "codeBlock": "class DoublyListNode:\n    def __init__(self, val=0, prev=None, next=None):\n        self.val = val\n        self.prev = prev\n        self.next = next\n\n# Constructing: 100 <-> 200\nnode1 = DoublyListNode(100)\nnode2 = DoublyListNode(200)\nnode1.next = node2\nnode2.prev = node1\n\nprint(node2.prev.val)  # 100\nprint(node1.next.val)  # 200"
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Memory Fragmentation:</strong> Unlike arrays/lists which are allocated in contiguous blocks of memory, linked list nodes are dynamically instantiated at arbitrary memory locations. Pointers/references link these objects together. This eliminates the need for expensive memory reallocations or shifts, but introduces overhead (each node requires additional bytes to store reference addresses) and results in poor CPU cache locality.</p><p class=\"mb-3\"><strong>Complexity Analysis:</strong> Insertion and deletion operations at the beginning of a Singly Linked List take O(1) time. However, deleting an arbitrary node requires traversing the preceding nodes, taking O(N) time. A Doubly Linked List optimizes this by allowing direct O(1) removal of any node if we already hold its reference, at the cost of doubling the pointer memory requirements.</p>"
+}

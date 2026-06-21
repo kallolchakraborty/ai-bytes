@@ -1,0 +1,21 @@
+{
+  "id": "py-ds-tree",
+  "title": "Trees & BSTs",
+  "category": "Python",
+  "subcategory": "Data Structures",
+  "description": "Hierarchical data structures in Python: Binary Trees, Binary Search Trees (BST), and depth-first traversals (Preorder, Inorder, Postorder).",
+  "language": "python",
+  "sections": [
+    {
+      "title": "Binary Tree Node & Structure",
+      "description": "A Binary Tree is a hierarchical structure where each node has at most two children, referred to as left and right. Preorder, Inorder, and Postorder recursive functions are the classic depth-first traversal methods.",
+      "codeBlock": "class TreeNode:\n    def __init__(self, val):\n        self.val = val\n        self.left = None\n        self.right = None\n\n# Create Tree:\n#       1\n#      / \\\n#     2   3\nroot = TreeNode(1)\nroot.left = TreeNode(2)\nroot.right = TreeNode(3)\n\n# Traversals\ndef preorder(n, path):\n    if n:\n        path.append(n.val)\n        preorder(n.left, path)\n        preorder(n.right, path)\n\ndef inorder(n, path):\n    if n:\n        inorder(n.left, path)\n        path.append(n.val)\n        inorder(n.right, path)\n\ndef postorder(n, path):\n    if n:\n        postorder(n.left, path)\n        postorder(n.right, path)\n        path.append(n.val)\n\npre_path = []\npreorder(root, pre_path)\nprint(pre_path)        # [1, 2, 3] (Root -> Left -> Right)"
+    },
+    {
+      "title": "Binary Search Tree (BST)",
+      "description": "A Binary Search Tree (BST) is a binary tree with ordering constraints: for any node, left descendants are smaller, and right descendants are larger. Inorder traversal of a BST yields elements in sorted order.",
+      "codeBlock": "def insert(root, key):\n    if root is None:\n        return TreeNode(key)\n    if key < root.val:\n        root.left = insert(root.left, key)\n    else:\n        root.right = insert(root.right, key)\n    return root\n\n# Construct BST\nbst_root = TreeNode(50)\ninsert(bst_root, 30)\ninsert(bst_root, 70)\ninsert(bst_root, 20)\n\nsorted_vals = []\ninorder(bst_root, sorted_vals)\nprint(sorted_vals)     # [20, 30, 50, 70] (sorted!)"
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Tree Traversals:</strong> Depth-First traversals visit tree nodes recursively. Preorder (Root-Left-Right) is commonly used to create copies of trees or evaluate prefix mathematical expressions. Inorder (Left-Root-Right) is used on BSTs to retrieve all keys in ascending order. Postorder (Left-Right-Root) is useful for post-fix expressions and deleting nodes (bottom-up execution ensures child nodes are deleted before parent nodes are cleaned).</p><p class=\"mb-3\"><strong>BST Complexity:</strong> Average time complexities for search, insertion, and deletion are O(log N). However, if elements are inserted in sorted order, the tree degenerates into a linear chain (like a linked list), dropping execution speeds to O(N). Balancing structures (such as AVL trees or Red-Black trees) resolve this by self-balancing during insertions.</p>"
+}

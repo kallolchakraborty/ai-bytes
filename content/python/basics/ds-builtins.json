@@ -1,0 +1,31 @@
+{
+  "id": "py-ds-builtins",
+  "title": "Built-in Collections",
+  "category": "Python",
+  "subcategory": "Data Structures",
+  "description": "Python's optimized built-in collections: lists, tuples, sets, and dictionaries — with syntax, dynamic operations, and comprehensions.",
+  "language": "python",
+  "sections": [
+    {
+      "title": "Lists (Mutable Arrays)",
+      "description": "Lists represent ordered sequence collections. They are highly flexible and support slicing, indexing, modifications, and list comprehensions.",
+      "codeBlock": "nums = [1, 2, 3, 4, 5]\n\n# Accessing elements\nprint(nums[0])         # 1\nprint(nums[-1])        # 5\nprint(nums[1:4])       # [2, 3, 4]\n\n# Manipulation Methods\nnums.append(6)\nnums.extend([7, 8])\nnums.insert(0, 0)\nprint(nums)            # [0, 1, 2, 3, 4, 5, 6, 7, 8]\n\n# Comprehensions\nsquares = [x**2 for x in range(5)]\nprint(squares)         # [0, 1, 4, 9, 16]"
+    },
+    {
+      "title": "Tuples (Immutable Records)",
+      "description": "Tuples are immutable sequence records. Once created, their values cannot be changed, making them safe for fixed structures and hashable dictionary keys.",
+      "codeBlock": "point = (3, 4)\nx, y = point\nprint(x, y)            # 3 4\n\n# Single-element tuple requires a trailing comma\nsingle = (42,)\nprint(single)          # (42,)"
+    },
+    {
+      "title": "Sets (Unique Collections)",
+      "description": "Sets store unique, unordered elements. They support O(1) membership tests and mathematical set operations like union, intersection, and difference.",
+      "codeBlock": "s = {1, 2, 3, 3}\nprint(s)               # {1, 2, 3}\n\n# Set operations\na = {1, 2, 3}\nb = {3, 4, 5}\nprint(a | b)           # {1, 2, 3, 4, 5} (Union)\nprint(a & b)           # {3}             (Intersection)\nprint(a - b)           # {1, 2}          (Difference)"
+    },
+    {
+      "title": "Dictionaries (Key-Value Mappings)",
+      "description": "Dictionaries store key-value associations. Keys must be immutable and unique. Dicts preserve insertion order in Python 3.7+.",
+      "codeBlock": "user = {\"name\": \"Alice\", \"role\": \"admin\"}\nprint(user[\"name\"])    # \"Alice\"\nprint(user.get(\"age\", 25)) # 25 (safe access with default fallback)\n\n# Insertion & Merging (Python 3.9+)\nmerged = user | {\"active\": True}\nprint(merged)          # {'name': 'Alice', 'role': 'admin', 'active': True}"
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Memory Management:</strong> Python lists are implemented as variable-length arrays of pointers to objects (equivalent to <code>std::vector&lt;PyObject*&gt;</code> in C++). Resizing follows an over-allocation pattern to achieve amortized O(1) appends, but inserting at the beginning forces a shift of all subsequent elements, taking O(N) time. Tuples are immutable and are allocated in a single block of memory, which makes them lighter and faster to construct than lists.</p><p class=\"mb-3\"><strong>Hash Table Implementations:</strong> Both <code>set</code> and <code>dict</code> are built on highly optimized hash tables. Dictionaries use a dense array of entries and an index table to preserve insertion order (since Python 3.6/3.7) while maintaining O(1) average lookup times. Keys must be hashable (immutable objects like strings, numbers, or tuples containing only immutable types). Sets are essentially dictionaries without values, utilizing identical open addressing hashing mechanics to ensure quick element checking.</p>"
+}
