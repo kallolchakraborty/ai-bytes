@@ -1,0 +1,31 @@
+{
+  "id": "genai-what-is-llm",
+  "title": "What exactly is an LLM?",
+  "category": "Gen AI",
+  "subcategory": "Foundations",
+  "description": "A Large Language Model (LLM) is fundamentally a statistical engine designed for next-token prediction, scaled up with massive amounts of data and compute.",
+  "language": "python",
+  "sections": [
+    {
+      "title": "The Core Objective: Next-Token Prediction",
+      "description": "At its most basic level, an LLM takes a sequence of words (or 'tokens') as input and calculates the probability distribution for the next token. By repeatedly predicting the most likely next token and appending it to the input, the model generates coherent text. It is essentially an extremely sophisticated autocomplete.",
+      "codeBlock": "# Conceptual representation of an LLM's core loop\ndef generate_text(prompt, max_tokens, model):\n    current_text = prompt\n    for _ in range(max_tokens):\n        # Model predicts the probability of all possible next tokens\n        next_token_probs = model.predict_next_token(current_text)\n        \n        # Sample the most likely token (e.g., greedy decoding)\n        next_token = sample(next_token_probs)\n        \n        current_text += next_token\n        if next_token == '<EOS>':\n            break\n            \n    return current_text"
+    },
+    {
+      "title": "Learning Patterns, Not Just Statistics",
+      "description": "While early language models (like n-grams) relied on simple frequency counting, modern LLMs learn deep structural patterns. To accurately predict the next word in a complex sentence, the model is forced to learn grammar, syntax, reasoning, factual knowledge, and world context implicitly during its training phase.<div class=\"my-5 flex justify-center\"><svg width=\"280\" height=\"140\" viewBox=\"0 0 280 140\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"max-w-full\"><rect x=\"20\" y=\"40\" width=\"80\" height=\"60\" rx=\"8\" class=\"fill-slate-50 dark:fill-slate-800/40 stroke-slate-300 dark:stroke-slate-700\" stroke-width=\"1.5\"/><text x=\"60\" y=\"70\" text-anchor=\"middle\" class=\"fill-slate-800 dark:fill-slate-200 font-bold text-sm\">Context</text><text x=\"60\" y=\"85\" text-anchor=\"middle\" class=\"fill-slate-500 dark:fill-slate-400 text-[10px]\">(N tokens)</text><path d=\"M 110 70 L 160 70\" class=\"stroke-brand-500\" stroke-width=\"2\" stroke-dasharray=\"4 2\" fill=\"none\"/><polygon points=\"160,65 170,70 160,75\" class=\"fill-brand-500\"/><rect x=\"180\" y=\"40\" width=\"80\" height=\"60\" rx=\"8\" class=\"fill-brand-500/10 stroke-brand-500\" stroke-width=\"1.5\"/><text x=\"220\" y=\"70\" text-anchor=\"middle\" class=\"fill-brand-600 dark:fill-brand-400 font-bold text-sm\">Prediction</text><text x=\"220\" y=\"85\" text-anchor=\"middle\" class=\"fill-brand-500/70 text-[10px]\">(Token N+1)</text></svg></div>",
+      "codeBlock": ""
+    },
+    {
+      "title": "How it Scales: The Transformer",
+      "description": "The architecture that made LLMs possible is the <strong>Transformer</strong>. Unlike previous sequential models (like RNNs/LSTMs), Transformers process entire sequences in parallel using the <em>Self-Attention</em> mechanism. This allows the model to weigh the importance of every word in the context window relative to every other word, capturing long-range dependencies efficiently.",
+      "codeBlock": ""
+    },
+    {
+      "title": "The Training Pipeline",
+      "description": "Creating a modern LLM involves three major stages:<br><br><strong>1. Pre-training:</strong> The model is trained on a massive corpus of internet text to predict the next word. It learns world knowledge and language structure (creates a Base Model).<br><strong>2. Supervised Fine-Tuning (SFT):</strong> The model is trained on high-quality instruction-response pairs to learn how to act as a helpful assistant rather than a document-completer.<br><strong>3. Alignment (RLHF/DPO):</strong> The model is further fine-tuned to align with human preferences (e.g., being safe, harmless, and helpful) using reinforcement learning.",
+      "codeBlock": ""
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Emergent Abilities:</strong> One of the most fascinating aspects of LLMs is that as you scale up the parameters (number of weights) and the training data, models begin to exhibit \"emergent abilities\"—skills they were never explicitly trained for, such as translating languages, writing code, or performing logical reasoning, simply because those patterns existed in the training data.</p>"
+}

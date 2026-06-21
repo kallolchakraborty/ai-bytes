@@ -14,6 +14,7 @@ const routeMap = {
   '#py-basics-api': 'content/python/basics/api.json',
   '#py-basics-concurrency': 'content/python/basics/concurrency.json',
   '#python-history': 'content/python/python-history.json',
+  '#genai-what-is-llm': 'content/genai/what-is-llm.json',
   '#genai-kvcache': 'content/genai/kv-cache.json'
 };
 
