@@ -20,7 +20,11 @@ const routeMap = {
   '#genai-what-is-llm': 'content/genai/what-is-llm.json',
   '#genai-kvcache': 'content/genai/kv-cache.json',
   '#genai-rag': 'content/genai/rag.json',
-  '#genai-finetuning': 'content/genai/fine-tuning.json'
+  '#genai-finetuning': 'content/genai/fine-tuning.json',
+  '#genai-prompt-engineering': 'content/genai/prompt-engineering.json',
+  '#genai-context-engineering': 'content/genai/context-engineering.json',
+  '#genai-harness-engineering': 'content/genai/harness-engineering.json',
+  '#genai-loop-engineering': 'content/genai/loop-engineering.json'
 };
 
 let scrollSpyCleanup = null;
