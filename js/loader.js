@@ -20,6 +20,7 @@ const routeMap = {
 };
 
 let scrollSpyCleanup = null;
+let isInitialLoad = true;
 
 async function loadContent(hash) {
   if (scrollSpyCleanup) {
@@ -61,7 +62,7 @@ async function loadContent(hash) {
           return `
             <div id="${sectionId}" class="scroll-mt-24 flex flex-col gap-3">
               <h3 class="text-xl font-semibold text-slate-900 dark:text-white">${section.title}</h3>
-              ${section.description ? `<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</p>` : ''}
+              ${section.description ? `<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</div>` : ''}
               <div class="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
                 <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm">content_copy</span> Copy
@@ -88,7 +89,7 @@ async function loadContent(hash) {
         return `
           <div id="${sectionId}" class="scroll-mt-24 flex flex-col gap-3">
             <h3 class="text-xl font-semibold text-slate-900 dark:text-white">${section.title}</h3>
-            ${section.description ? `<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</p>` : ''}
+            ${section.description ? `<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</div>` : ''}
             <div class="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
               <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm">content_copy</span> Copy
@@ -224,7 +225,11 @@ async function loadContent(hash) {
         link.classList.remove('active-doc-link');
       }
     });
-    openActiveSidebarSection();
+    if (!isInitialLoad) {
+      openActiveSidebarSection();
+    } else {
+      isInitialLoad = false;
+    }
 
     // Populate right outline dynamically
     const outlineArea = document.getElementById('docs-right-outline');
