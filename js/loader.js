@@ -17,7 +17,26 @@ const routeMap = {
 };
 
 let scrollSpyCleanup = null;
-let isInitialLoad = true;
+
+const COPY_BTN = '<button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5"><span class="material-symbols-outlined text-sm">content_copy</span> Copy</button>';
+
+function codeBlock(code, langClass) {
+  return `<div class="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">${COPY_BTN}<pre><code class="${langClass}">${escapeHtml(code)}</code></pre></div>`;
+}
+
+function renderSections(sections, dataId, langClass, extraClass) {
+  if (!sections) return '';
+  return `<div class="flex flex-col gap-8${extraClass || ''}">` + sections.map(function(section, idx) {
+    var sectionId = 'section-' + dataId + '-' + idx;
+    return (
+      '<div id="' + sectionId + '" class="scroll-mt-24 flex flex-col gap-3">' +
+      '<h3 class="text-xl font-semibold text-slate-900 dark:text-white">' + section.title + '</h3>' +
+      (section.description ? '<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">' + section.description + '</div>' : '') +
+      codeBlock(section.codeBlock, langClass) +
+      '</div>'
+    );
+  }).join('\n') + '</div>';
+}
 
 async function loadContent(hash) {
   if (scrollSpyCleanup) {
@@ -65,7 +84,8 @@ async function loadContent(hash) {
     // Render content dynamically
     const langClass = data.language ? 'language-' + data.language : 'text-slate-800 dark:text-slate-200';
     let embedCode = '';
-    if (data.id === 'compiler' || data.id === 'interpreter' || data.id === 'gil' || data.id === 'concurrency') {
+    const isInteractive = data.id === 'compiler' || data.id === 'interpreter' || data.id === 'gil' || data.id === 'concurrency';
+    if (isInteractive) {
       const pageTitles = { compiler: 'How a Compiler Works', interpreter: 'How an Interpreter Works', gil: "How Python's GIL Works", concurrency: 'Python Concurrency Visualizer' };
       embedCode = `
         <div class="w-full aspect-auto h-[530px] md:aspect-[16/12] md:h-auto border border-blue-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-[#0F1115]">
@@ -73,48 +93,15 @@ async function loadContent(hash) {
         </div>
       `;
       if (data.sections) {
-        embedCode += `<div class="flex flex-col gap-8 mt-8">` + data.sections.map((section, idx) => {
-          const sectionId = `section-${data.id}-${idx}`;
-          return `
-            <div id="${sectionId}" class="scroll-mt-24 flex flex-col gap-3">
-              <h3 class="text-xl font-semibold text-slate-900 dark:text-white">${section.title}</h3>
-              ${section.description ? `<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</div>` : ''}
-              <div class="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
-                <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-sm">content_copy</span> Copy
-                </button>
-                <pre><code class="${langClass}">${escapeHtml(section.codeBlock)}</code></pre>
-              </div>
-            </div>
-          `;
-        }).join('\n') + `</div>`;
+        embedCode += renderSections(data.sections, data.id, langClass, ' mt-8');
       } else if (data.codeBlock) {
         embedCode += `
           <div class="mt-6 text-xs font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Sample Code / Syntax</div>
-          <div id="section-syntax" class="scroll-mt-24 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
-            <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm">content_copy</span> Copy
-            </button>
-            <pre><code class="${langClass}">${escapeHtml(data.codeBlock)}</code></pre>
-          </div>
+          <div id="section-syntax" class="scroll-mt-24">${codeBlock(data.codeBlock, langClass)}</div>
         `;
       }
     } else if (data.sections) {
-      embedCode = `<div class="flex flex-col gap-8">` + data.sections.map((section, idx) => {
-        const sectionId = `section-${data.id}-${idx}`;
-        return `
-          <div id="${sectionId}" class="scroll-mt-24 flex flex-col gap-3">
-            <h3 class="text-xl font-semibold text-slate-900 dark:text-white">${section.title}</h3>
-            ${section.description ? `<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${section.description}</div>` : ''}
-            <div class="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
-              <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">content_copy</span> Copy
-              </button>
-              <pre><code class="${langClass}">${escapeHtml(section.codeBlock)}</code></pre>
-            </div>
-          </div>
-        `;
-      }).join('\n') + `</div>`;
+      embedCode = renderSections(data.sections, data.id, langClass, '');
     } else if (data.timeline) {
       let items = '';
       for (let ti = 0; ti < data.timeline.length; ti++) {
@@ -146,14 +133,7 @@ async function loadContent(hash) {
           '<pre><code class="' + langClass + '">' + escapeHtml(data.codeBlock) + '</code></pre></div>';
       }
     } else {
-      embedCode = `
-        <div id="section-syntax" class="scroll-mt-24 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 text-sm leading-relaxed overflow-x-auto relative group">
-          <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded-lg text-xs font-sans text-slate-500 transition-all flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm">content_copy</span> Copy
-          </button>
-          <pre><code class="${langClass}">${escapeHtml(data.codeBlock)}</code></pre>
-        </div>
-      `;
+      embedCode = `<div id="section-syntax" class="scroll-mt-24">${codeBlock(data.codeBlock, langClass)}</div>`;
     }
 
     contentArea.innerHTML = `
@@ -241,7 +221,6 @@ async function loadContent(hash) {
         link.classList.remove('active-doc-link');
       }
     });
-    isInitialLoad = false;
 
     // Populate right outline dynamically
     const outlineArea = document.getElementById('docs-right-outline');
@@ -349,9 +328,8 @@ function setupOutlineScrollSpy() {
   if (sections.length === 0) return null;
 
   function updateActiveLink() {
-    const scrollPosition = window.scrollY + 120; // Offset for top header and layout spacing
+    const scrollPosition = window.scrollY + 120;
     
-    // Fallback: bottom of page
     if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
       links.forEach((link, idx) => link.classList.toggle('active-outline', idx === links.length - 1));
       return;
@@ -395,8 +373,6 @@ function setupOutlineScrollSpy() {
     window.removeEventListener('scroll', onScroll);
   };
 }
-
-// ponytail: removed sidebar toggle — only one group, no collapsible needed
 
 function escapeHtml(text) {
   return text
@@ -454,7 +430,6 @@ function copyCode(btn) {
   });
 }
 window.copyCode = copyCode;
-
 window.addEventListener('DOMContentLoaded', () => {
   const initialHash = window.location.hash || '#python-history';
   loadContent(initialHash);

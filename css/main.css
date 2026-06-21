@@ -237,18 +237,6 @@ html.dark .node-active span:not(.material-symbols-outlined) {
   color: #F5A389 !important;
 }
 
-.node-active .accent-node {
-  background-color: #FFF0E8;
-  box-shadow: 0 0 10px rgba(233, 84, 32, 0.25);
-}
-html.dark .node-active .accent-node {
-  background-color: rgba(233, 84, 32, 0.15);
-  box-shadow: 0 0 12px rgba(233, 84, 32, 0.35);
-}
-html.dark .node-active span:not(.material-symbols-outlined) {
-  color: #F5A389 !important;
-}
-
 /* ========== Player: Interpreter Page ========== */
 .flow-pulse { animation: flowPulse 0.5s ease-in-out 2; }
 @keyframes flowPulse {
