@@ -164,6 +164,10 @@
     { title: "KV Cache", category: "Gen AI", url: "docs.html#genai-kvcache", tags: ["genai", "kv", "cache", "attention", "inference", "memory", "decoding", "transformer"] },
     { title: "RAG", category: "Gen AI", url: "docs.html#genai-rag", tags: ["genai", "rag", "retrieval", "augmented", "generation", "vector", "search", "chunking"] },
     { title: "Fine-Tuning & PEFT", category: "Gen AI", url: "docs.html#genai-finetuning", tags: ["genai", "fine-tuning", "peft", "lora", "qlora", "adapter", "sft", "alignment"] },
+    { title: "Prompt Engineering", category: "Gen AI", url: "docs.html#genai-prompt-engineering", tags: ["genai", "prompt", "engineering", "zero-shot", "few-shot", "cot", "chain-of-thought", "injection", "structured-output"] },
+    { title: "Context Engineering", category: "Gen AI", url: "docs.html#genai-context-engineering", tags: ["genai", "context", "engineering", "window", "lost-in-the-middle", "sliding-window", "caching"] },
+    { title: "Harness Engineering", category: "Gen AI", url: "docs.html#genai-harness-engineering", tags: ["genai", "harness", "engineering", "evaluation", "benchmark", "llm-as-judge", "mmlu", "gsm8k"] },
+    { title: "Loop Engineering", category: "Gen AI", url: "docs.html#genai-loop-engineering", tags: ["genai", "loop", "engineering", "react", "agent", "tool-use", "reflexion", "tree-of-thoughts"] },
   ];
 
   var _selectedIndex = -1;
