@@ -33,7 +33,7 @@ function renderSections(sections, dataId, langClass, extraClass) {
       '<div id="' + sectionId + '" class="scroll-mt-24 flex flex-col gap-3">' +
       '<h3 class="text-xl font-semibold text-slate-900 dark:text-white">' + section.title + '</h3>' +
       (section.description ? '<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">' + section.description + '</div>' : '') +
-      codeBlock(section.codeBlock, langClass) +
+      (section.codeBlock ? codeBlock(section.codeBlock, langClass) : '') +
       '</div>'
     );
   }).join('\n') + '</div>';
