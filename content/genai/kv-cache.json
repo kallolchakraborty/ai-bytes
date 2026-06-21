@@ -1,0 +1,31 @@
+{
+  "id": "genai-kvcache",
+  "title": "KV Cache",
+  "category": "Gen AI",
+  "subcategory": "Inference Optimization",
+  "description": "KV Cache (Key-Value Cache) is a crucial optimization technique used during the auto-regressive decoding phase of Large Language Models (LLMs) to avoid redundant computations.",
+  "language": "python",
+  "sections": [
+    {
+      "title": "Pre-fill vs. Decoding Phase",
+      "description": "LLM inference happens in two phases. In the <strong>Pre-fill phase</strong>, the model processes the entire input prompt in parallel to compute the initial Key and Value matrices, outputting the first generated token. In the <strong>Decoding phase</strong>, tokens are generated auto-regressively, one by one. This sequential generation is where KV Cache is necessary to speed up inference.",
+      "codeBlock": ""
+    },
+    {
+      "title": "The Problem: Redundant Computations",
+      "description": "During text generation, the attention mechanism requires calculating weights across all previously generated tokens. Without caching, the model re-computes the Key and Value matrices for all previous tokens at every step. This leads to an O(N²) quadratic time complexity and massive redundant operations.",
+      "codeBlock": "# Naive Attention without KV Cache (Conceptual)\ndef generate_next_token(model, past_tokens):\n    # Re-computes K and V for ALL past_tokens\n    Q = model.W_q(past_tokens[-1])\n    K = model.W_k(past_tokens)\n    V = model.W_v(past_tokens)\n    \n    attention = softmax(Q @ K.T) @ V\n    return model.ffn(attention)"
+    },
+    {
+      "title": "The Solution: KV Cache",
+      "description": "KV Cache solves this by storing the previously computed Key and Value vectors in GPU memory. When generating a new token, the model only computes the Query, Key, and Value for the *current* token. It then appends the new Key and Value to the cached Keys and Values, drastically reducing the time complexity to O(N) per step.",
+      "codeBlock": "# Optimized Attention with KV Cache (Conceptual)\ndef generate_next_token_kv_cache(model, current_token, kv_cache):\n    # Only compute Q, K, V for the NEW token\n    q_new = model.W_q(current_token)\n    k_new = model.W_k(current_token)\n    v_new = model.W_v(current_token)\n    \n    # Update cache\n    kv_cache['K'].append(k_new)\n    kv_cache['V'].append(v_new)\n    \n    attention = softmax(q_new @ kv_cache['K'].T) @ kv_cache['V']\n    return model.ffn(attention)"
+    },
+    {
+      "title": "Trade-offs: Memory Bound",
+      "description": "While KV Cache significantly speeds up computation, it shifts the bottleneck from compute (FLOPs) to memory bandwidth. As the context window and batch size grow, the KV cache consumes massive amounts of VRAM. This makes LLM inference memory-bound.",
+      "codeBlock": ""
+    }
+  ],
+  "details": "<p class=\"mb-3\"><strong>Memory Requirements:</strong> The size of the KV cache grows linearly with the sequence length. Innovations like <strong>PagedAttention</strong> (which inspired vLLM) manage KV cache memory using OS-like paging to eliminate fragmentation. Additionally, architectural changes like <strong>Multi-Query Attention (MQA)</strong> and <strong>Grouped-Query Attention (GQA)</strong> were designed specifically to shrink the KV cache footprint by sharing Key/Value heads across multiple Query heads.</p>"
+}

@@ -13,7 +13,8 @@ const routeMap = {
   '#py-basics-files': 'content/python/basics/files.json',
   '#py-basics-api': 'content/python/basics/api.json',
   '#py-basics-concurrency': 'content/python/basics/concurrency.json',
-  '#python-history': 'content/python/python-history.json'
+  '#python-history': 'content/python/python-history.json',
+  '#genai-kvcache': 'content/genai/kv-cache.json'
 };
 
 let scrollSpyCleanup = null;
