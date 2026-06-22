@@ -26,7 +26,11 @@ const routeMap = {
   '#genai-harness-engineering': 'content/genai/harness-engineering.json',
   '#genai-loop-engineering': 'content/genai/loop-engineering.json',
   '#genai-moe': 'content/genai/mixture-of-experts.json',
-  '#genai-llm-serving': 'content/genai/llm-serving.json'
+  '#genai-llm-serving': 'content/genai/llm-serving.json',
+  '#aiml-ann-history': 'content/aiml/ann-history.json',
+  '#aiml-types-of-anns': 'content/aiml/types-of-anns.json',
+  '#sysdesign-fundamentals': 'content/sysdesign/system-design.json',
+  '#database-fundamentals': 'content/databases/databases.json'
 };
 
 let scrollSpyCleanup = null;
@@ -74,18 +78,43 @@ async function loadContent(hash) {
     try {
       const res = await fetch('README.md?t=' + Date.now());
       const md = await res.text();
-      const left = document.getElementById('left-sidebar');
-      const outline = document.getElementById('docs-right-outline');
-      if (left) left.style.display = 'none';
-      if (outline) outline.parentElement.style.display = 'none';
-      document.querySelector('main').classList.remove('max-w-3xl');
-      document.querySelector('main').classList.add('max-w-4xl');
-      contentArea.innerHTML = '<div class="readme-content">' + marked.parse(md) + '</div>';
+
+      const existing = document.getElementById('readme-modal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'readme-modal';
+      modal.className = 'fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-20 px-4';
+      modal.innerHTML =
+        '<div class="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm" id="readme-modal-backdrop"></div>' +
+        '<div class="relative z-10 w-full max-w-3xl max-h-[80vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">' +
+          '<div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 shrink-0">' +
+            '<h2 class="text-sm font-bold text-slate-900 dark:text-white font-sans">README — Quick Bytes</h2>' +
+            '<button id="readme-modal-close" class="w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all" aria-label="Close README">' +
+              '<span class="material-symbols-outlined text-[18px]">close</span>' +
+            '</button>' +
+          '</div>' +
+          '<div class="flex-1 overflow-y-auto px-6 py-5 readme-content">' + marked.parse(md) + '</div>' +
+        '</div>';
+
+      document.body.appendChild(modal);
+
+      function closeReadme() {
+        modal.remove();
+        history.length > 1 ? history.back() : (window.location.hash = '#python-history');
+      }
+
+      document.getElementById('readme-modal-close').addEventListener('click', closeReadme);
+      document.getElementById('readme-modal-backdrop').addEventListener('click', closeReadme);
+      document.addEventListener('keydown', function handler(e) {
+        if (e.key === 'Escape' && document.getElementById('readme-modal')) {
+          closeReadme();
+          document.removeEventListener('keydown', handler);
+        }
+      });
     } catch (e) {
       contentArea.innerHTML = '<p class="text-red-500">Failed to load README.md</p>';
     }
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active-doc-link'));
-    if (document.getElementById('docs-right-outline')) document.getElementById('docs-right-outline').innerHTML = '';
     return;
   }
 

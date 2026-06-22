@@ -808,6 +808,22 @@ mark { background: transparent; color: inherit; }
 .search-result mark { background-color: #FEE5D5; }
 html.dark .search-result mark { background-color: rgba(233, 84, 32, 0.25); }
 
+/* ========== ANN Diagram Animations ========== */
+@keyframes annPulse { 0%,100% { opacity:.6 } 50% { opacity:1 } }
+@keyframes annFlow { to { stroke-dashoffset:-10 } }
+
+.ann-diagram svg { display:block }
+.ann-diagram .ann-node-pulse { animation:annPulse 2s ease-in-out infinite }
+.ann-diagram .ann-edge-flow { stroke-dasharray:6 4; animation:annFlow .8s linear infinite }
+.ann-diagram .ann-node { fill:#f8fafc; stroke:#E95420; stroke-width:2; rx:8 }
+html.dark .ann-diagram .ann-node { fill:#1a1d25 }
+.ann-diagram .ann-conn { stroke:#94a3b8; stroke-width:1.5; fill:none }
+html.dark .ann-diagram .ann-conn { stroke:#475569 }
+.ann-diagram .ann-label { font:11px system-ui,sans-serif; fill:#64748b }
+html.dark .ann-diagram .ann-label { fill:#94a3b8 }
+.ann-diagram .ann-title { font:13px system-ui,sans-serif; font-weight:600; fill:#1e293b }
+html.dark .ann-diagram .ann-title { fill:#e2e8f0 }
+
 /* ========== Reduced Motion ========== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

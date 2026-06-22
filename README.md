@@ -2,7 +2,7 @@
 
 A modern, search-first documentation portal for developer study notes, cheat sheets, and interactive visual guides — built as a static site for GitHub Pages.
 
-**Current stats:** 6 HTML pages, 23 JSON content files (6 python/basics, 2 python, 2 programming, 3 interactive, 10 genai), 18 search entries, 18 route map entries, ~2K JS lines, ~474 CSS lines.
+**Current stats:** 6 HTML pages, 34 JSON content files (15 python/basics, 1 python-history, 10 genai, 2 aiml, 4 interactive, 1 sysdesign, 1 databases), 30 sidebar links across 10 sections, 31 search entries, 30 route map entries, ~1.4K JS lines across 3 files, ~837 CSS lines across 2 files.
 
 ## Features
 
@@ -50,7 +50,7 @@ Both `css/main.css` (custom styles) and `css/tailwind.css` (pre-built Tailwind) 
 
 Each animation page (`compiler.html`, `interpreter.html`, `gil.html`) uses `js/animation-core.js` as a shared module.
 
-- Scene data (titles, subtitles, labels) is fetched from `content/interactive/*.json`.
+- Scene data (titles, subtitles, labels) is embedded inline in each interactive HTML page.
 - Scene tags are `<button type="button" role="tab" aria-selected="...">` inside a `role="tablist"` group.
 - `animation-core.js` manages scene transitions, progress bar, auto-play timer, keyboard nav, and `aria-selected` state.
 - Each page provides an `onSceneAnimation` callback for scene-specific DOM manipulation.
@@ -94,18 +94,17 @@ The codebase follows several best practices for a static site without a build st
 ├── gil.html                GIL animation page
 ├── css/
 │   ├── main.css            All custom styles (player animations, timeline, Prism overrides, GIL vars)
-│   ├── tailwind.css        Pre-built Tailwind CSS (43 KB, minified)
+│   ├── tailwind.css        Pre-built Tailwind CSS (48 KB, minified)
 │   └── input.css           Tailwind source with @tailwind directives
 ├── js/
-│   ├── theme.js            Dark/light mode toggle with localStorage
 │   ├── modals.js           Share + search modals (HTML injection and event handling)
 │   ├── loader.js           Dynamic content loader for docs.html
 │   └── animation-core.js   Shared animation player (scenes, fullscreen, keyboard)
 ├── content/
-│   ├── python/             Python content (history + 6 basics pages)
+│   ├── python/             Python content (history + 15 basics pages)
 │   ├── programming/        Programming concept content
-│   ├── genai/              Gen AI study guides (8 pages: LLM, KV Cache, RAG, fine-tuning, prompt/context/harness/loop engineering)
-│   └── interactive/        Animation scene data (JSON)
+│   ├── genai/              Gen AI study guides (10 pages: LLM, KV Cache, RAG, fine-tuning, MoE, LLM Serving, prompt/context/harness/loop engineering)
+│   └── interactive/        Animation scene data (JSON, embedded inline in HTML)
 ├── assets/
 │   └── logo.svg            Minified Circle of Knowledge logo (557 B)
 ├── tailwind.config.js      Unified Tailwind configuration
@@ -154,7 +153,7 @@ Content pages are JSON files loaded dynamically by `js/loader.js`. Each file has
 - `timeline` (optional) renders an animated alternating timeline instead of a code block.
 - `details` is rendered in a "Deep Dive" info box with a left accent bar.
 
-Routes map hash anchors to JSON paths in `js/loader.js`. The default route (when no hash is present) falls back to `#python-history`.
+Routes map 27 hash anchors to 26 unique JSON paths in `js/loader.js` (two routes alias the same file: `#py-basics-ds` and `#py-ds-builtins`). The default route (when no hash is present) falls back to `#python-history`.
 
 ## Search
 
@@ -166,10 +165,10 @@ The search modal (`Ctrl+K` / `Cmd+K`) performs live fuzzy filtering across a sta
 - Clicking a result navigates to `docs.html#<anchor>` and closes the modal.
 
 The search index contains:
-- **Python** — History of Python
-- **Python Basics** — Data Types, Loops, I/O, Data Structures, File Handling, API Handling, Time & Space Complexity, Algorithms & Patterns, OOP & Design Patterns
-- **System Internals** — GIL, Compiler, Interpreter
-- **Gen AI** — What is an LLM?, KV Cache, RAG, Fine-Tuning & PEFT, Prompt Engineering, Context Engineering, Harness Engineering, Loop Engineering, Mixture of Experts, LLM Serving & Deployment
+- **Python Basics** — Data Types & Operations, Loops & Control Flow, Input & Output, File Handling, API Handling, Multithreading & Concurrency, History of Python
+- **Python Data Structures** — Built-in Collections, Linked Lists, Stacks & Queues, Priority Queues & Heaps, Trees & BSTs, Graphs & Networks
+- **Python Algorithms** — Time & Space Complexity, Algorithms & Patterns, OOP & Design Patterns
+- **Gen AI** — What exactly is an LLM?, KV Cache, RAG, Fine-Tuning & PEFT, Prompt Engineering, Context Engineering, Harness Engineering, Loop Engineering, Mixture of Experts, LLM Serving
 
 ## Accessibility
 
