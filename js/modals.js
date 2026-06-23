@@ -710,12 +710,6 @@
   document.addEventListener('keydown', function(e) {
     var modal = document.getElementById('search-modal');
     if (!modal || modal.classList.contains('hidden')) return;
-
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      closeSearchModal();
-      return;
-    }
     if (e.key === 'Escape') closeSearchModal();
   });
 
