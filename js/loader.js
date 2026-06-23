@@ -381,7 +381,7 @@ async function loadContent(hash) {
     // Trigger entrance animations
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        const section = contentArea.querySelector('section');
+        const section = contentArea.querySelector('article');
         if (section) section.classList.add('anim-ready');
         if (data.sections) {
           data.sections.forEach((_, idx) => {
