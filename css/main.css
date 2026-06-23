@@ -206,6 +206,14 @@ html.dark .hero-ring {
   animation: logo-hero-pulse 4s ease-in-out infinite;
 }
 
+.sparkle-gradient {
+  background: linear-gradient(135deg, #FF8A65 0%, #E95420 50%, #BF360C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+
 /* ========== Index: Grid Background ========== */
 .grid-bg {
   background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.03) 1px, transparent 0);
