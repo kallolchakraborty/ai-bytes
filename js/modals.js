@@ -188,6 +188,7 @@
     _lastFocusedEl = document.activeElement;
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    if (input) input.value = '';
     if (input) input.focus();
     document.body.style.overflow = 'hidden';
     _selectedIndex = -1;
@@ -350,7 +351,7 @@
       let descHtml = '';
       if (item.description) {
         let desc = q ? _highlight(item.description, q) : item.description;
-        descHtml = '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">' + desc + '</p>';
+        descHtml = '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + desc + '</p>';
       }
 
       let sectionsHtml = '';
