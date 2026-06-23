@@ -56,6 +56,7 @@ const routeMap = {
   '#aiml-ml-production-ops': 'content/aiml/ml-production-ops.json',
   '#aiml-ml-interpretability-fairness': 'content/aiml/ml-interpretability-fairness.json',
   '#aiml-ml-mock-interviews': 'content/aiml/ml-mock-interviews.json',
+  '#aiml-ml-roadmap': 'content/aiml/ml-roadmap.json',
   '#sysdesign-fundamentals': 'content/sysdesign/system-design.json',
   '#database-fundamentals': 'content/databases/databases.json',
   '#faang-facts': 'content/faang/faang-facts.json'
