@@ -32,53 +32,7 @@
   <link rel="prefetch" href="docs.html" as="document" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script>
-  (function() {
-    var key = 'theme';
-    function safeGet(key) {
-      try { return localStorage.getItem(key); } catch (e) { return null; }
-    }
-    function safeSet(key, val) {
-      try { localStorage.setItem(key, val); } catch (e) {}
-    }
-    function getTheme() {
-      var stored = safeGet(key);
-      if (stored === 'dark' || stored === 'light') return stored;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    function apply(t) {
-      document.documentElement.classList.toggle('dark', t === 'dark');
-      var icons = document.querySelectorAll('.theme-toggle-btn .material-symbols-outlined');
-      for (var i = 0; i < icons.length; i++) {
-        icons[i].textContent = t === 'dark' ? 'light_mode' : 'dark_mode';
-      }
-    }
-    apply(getTheme());
-    document.addEventListener('DOMContentLoaded', function() {
-      var btns = document.querySelectorAll('.theme-toggle-btn');
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener('click', function() {
-          var isDark = document.documentElement.classList.contains('dark');
-          var t = isDark ? 'light' : 'dark';
-          apply(t);
-          safeSet(key, t);
-        });
-      }
-    });
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-      if (!safeGet(key)) {
-        apply(e.matches ? 'dark' : 'light');
-      }
-    });
-  })();
-  if (navigator.platform.indexOf('Mac') !== -1) {
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('kbd').forEach(function(el) {
-        el.textContent = el.textContent.replace('Ctrl', '\u2318');
-      });
-    });
-  }
-  </script>
+  <script src="js/theme.js"></script>
   <link rel="stylesheet" href="css/tailwind.css" />
   <link rel="stylesheet" href="css/main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -131,10 +85,10 @@
     <!-- Dark mode radial glow override -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl aspect-[2/1] pointer-events-none hidden dark:block" style="background: radial-gradient(ellipse at 50% 0%, rgba(233,84,32,0.12) 0%, transparent 60%);"></div>
 
-    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-8 relative z-10">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-3 relative z-10">
       
       <!-- Logo -->
-      <img src="assets/logo.svg" alt="ai bytes Logo" class="w-20 h-20 md:w-28 md:h-28 object-contain opacity-80 logo-circular-spin" />
+      <img src="assets/logo.svg" alt="ai bytes Logo" class="w-28 h-28 md:w-36 md:h-36 object-contain logo-hero-pulse" />
 
       <!-- Hero Header -->
       <div class="flex flex-col gap-4">

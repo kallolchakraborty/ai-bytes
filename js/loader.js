@@ -12,8 +12,11 @@ function colorizeTags(root) {
     var t = el.getAttribute('data-tag');
     var h = 0; for (var i = 0; i < t.length; i++) h = ((h << 5) - h) + t.charCodeAt(i);
     var c = _TAG_COLORS[Math.abs(h) % _TAG_COLORS.length];
-    el.style.background = c + '1A'; el.style.color = c;
-    if (document.documentElement.classList.contains('dark')) el.style.background = c + '2E';
+    el.style.setProperty('--tag-color', c);
+    el.style.setProperty('--tag-bg', c + '1A');
+    if (document.documentElement.classList.contains('dark')) {
+      el.style.setProperty('--tag-bg', c + '2E');
+    }
   });
 }
 
@@ -104,7 +107,7 @@ async function loadContent(hash) {
 
       function closeReadme() {
         modal.remove();
-        history.length > 1 ? history.back() : (window.location.hash = '#python-history');
+        window.location.hash = '#python-history';
       }
 
       document.getElementById('readme-modal-close').addEventListener('click', closeReadme);
@@ -181,11 +184,10 @@ async function loadContent(hash) {
         </div>
       `;
       if (data.codeBlock) {
-        embedCode += '<div class="mt-6 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-4 text-sm leading-relaxed overflow-x-auto relative group">' +
-          '<pre><code class="' + langClass + '">' + escapeHtml(data.codeBlock) + '</code></pre></div>';
+        embedCode += `<div class="mt-6">${codeBlock(data.codeBlock, langClass)}</div>`;
       }
     } else {
-      embedCode = `<div id="section-syntax" class="scroll-mt-24">${codeBlock(data.codeBlock, langClass)}</div>`;
+      embedCode = `<div id="section-syntax" class="scroll-mt-24">${data.codeBlock ? codeBlock(data.codeBlock, langClass) : ''}</div>`;
     }
 
     contentArea.innerHTML = `
@@ -205,7 +207,7 @@ async function loadContent(hash) {
 
         ${data.comparisonTable ? `
           <div id="section-comparison" class="scroll-mt-24">
-            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400 mb-3 mt-6">CPython Concurrency Comparison Matrix</h4>
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400 mb-3 mt-6">${data.comparisonTableTitle || 'Comparison Matrix'}</h4>
             <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-[#0E1115]">
               <table class="w-full text-xs text-left border-collapse">
                 <thead class="bg-slate-50 dark:bg-slate-900/60 font-bold font-mono border-b border-slate-200 dark:border-slate-800">
@@ -319,24 +321,8 @@ async function loadContent(hash) {
     }
 
     if (contentArea.querySelector('pre code')) {
-      if (typeof Prism === 'undefined') {
-        if (!window.__prismLoading) {
-          window.__prismLoading = true;
-          var s1 = document.createElement('script');
-          s1.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js';
-          s1.onload = function() {
-            var s2 = document.createElement('script');
-            s2.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js';
-            s2.onload = function() {
-              window.__prismLoading = false;
-              Prism.highlightAll();
-            };
-            document.head.appendChild(s2);
-          };
-          document.head.appendChild(s1);
-        }
-      } else {
-        Prism.highlightAll();
+      if (typeof Prism !== 'undefined') {
+        Prism.highlightAllUnder(contentArea);
       }
     }
 
@@ -384,20 +370,20 @@ async function loadContent(hash) {
 }
 
 function setupOutlineSmoothScroll() {
-  document.querySelectorAll('.outline-link').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        e.preventDefault();
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        // Highlight active right outline
-        document.querySelectorAll('.outline-link').forEach(link => {
-          link.classList.toggle('active-outline', link.getAttribute('href') === targetId);
-        });
-      }
-    });
+  const outline = document.getElementById('docs-right-outline');
+  if (!outline) return;
+  outline.addEventListener('click', function(e) {
+    const link = e.target.closest('.outline-link');
+    if (!link) return;
+    const targetId = link.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      e.preventDefault();
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.outline-link').forEach(l => {
+        l.classList.toggle('active-outline', l.getAttribute('href') === targetId);
+      });
+    }
   });
 }
 
