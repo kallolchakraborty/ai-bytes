@@ -42,3 +42,40 @@ Not lazy about: input validation at trust boundaries, error handling that preven
 | JS total | 1,749 lines across 4 files |
 | main.css | 474 lines |
 | tailwind.css | 48KB minified |
+
+## Session 2026-06-23: FAANG ML curriculum — 20-file build
+
+### Scope
+Complete FAANG-grade ML interview preparation curriculum. 20 content files across 5 phases covering:
+- Foundations (6 files): fundamentals, supervised, unsupervised, data-centric, math, A/B testing
+- Neural Networks (4 files): activation functions, training, intro to NNs, types of ANNs
+- Zero-to-Hero & Research (3 files): from-scratch implementations, coding patterns, papers
+- System Design, Hardware & Deployment (4 files): ML system design, rec sys, GPU deep dive, project structure
+- Interview Prep (3 files): behavioral STARs, chestnut questions, company focus
+
+### Design decisions
+- Every file: 🧠 Intuition blocks, 📊 Concrete numbers, 🎯 Practical Workflows, 🔍 Interview Angle tags
+- Karpathy-inspired: micrograd, nanoGPT, BPE tokenizer, manual backprop, KV cache in ml-zero-to-hero
+- Ng-inspired: ml-project-structure (HLP, error analysis, orthogonalization), ml-data-centric, 🎯 workflow checklists
+- Andrew Ng-style pedagogy: 📋 objectives headers, ✅ key takeaway footers, ❌ common mistakes
+- GPU deep dive (ml-gpu-deep-dive): memory hierarchy, mixed precision, FlashAttention, inference optimization
+- FAANG Q&As distributed per file (~150 total), all with Interview Angle tags
+- 17 new files + 2 enhanced (types-of-anns, ann-history) + 1 reframed (ann-history → Intro to NNs)
+- 0 external dependencies — JSON content files, raw HTML/CSS/JS
+
+### Key files
+- `content/aiml/*.json` — 20 content files (~180 sections, ~90 SVGs, ~95 code blocks)
+- `js/loader.js` — +18 routes (20 AI/ML total)
+- `docs.html` — AI/ML sidebar: 20 links in 5 phases
+- `index.html` — Phase 5: 20 tiles
+- `js/modals.js` — +18 search entries
+
+### Stats target
+| Metric | After |
+|--------|-------|
+| JSON content files | ~55 |
+| AI/ML files | 20 |
+| Search entries | ~45 |
+| Routes | ~46 |
+| JS total | ~2,200 lines |
+| CSS total | ~550 lines |
