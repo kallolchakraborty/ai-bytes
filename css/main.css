@@ -1050,5 +1050,39 @@ html.dark .related-topic-card:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
 }
 
+/* ========== SVG Text Rendering and Overflow Fixes ========== */
+svg text {
+  font-family: 'JetBrains Mono', 'Ubuntu Mono', 'Courier New', monospace !important;
+  letter-spacing: -0.04em !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Adjust font sizes globally within SVGs to ensure container fit */
+svg text {
+  font-size: 9.5px !important;
+}
+
+/* Specific overrides for labels that are values or need to be slightly larger */
+svg text.ll-lbl-val, 
+svg text.sq-lbl-val, 
+svg text.tr-lbl-val, 
+svg text.ll-lbl,
+svg text.sq-lbl,
+svg text.tr-lbl {
+  font-size: 10.5px !important;
+}
+
+/* Bold titles inside SVGs */
+svg text[style*="bold"], 
+svg text[font-weight="bold"],
+svg text.sq-lbl-title,
+svg text.co-lbl-title,
+svg text.tr-lbl-title,
+svg text.mc-lbl-title {
+  font-size: 11px !important;
+  letter-spacing: -0.02em !important;
+}
+
+
 
 
