@@ -368,7 +368,7 @@
 
     // Google Staff Engineer: O(N) Substring overlap heuristic checks
     var qWords = q.split(/\s+/).filter(Boolean);
-    var textToSearch = ((item.title || '') + ' ' + (item.category || '') + ' ' + (item.description || '') + ' ' + (item.tags || []).join(' ')).toLowerCase();
+    var textToSearch = ((item.title || '') + ' ' + (item.category || '') + ' ' + (item.description || '') + ' ' + (item.tags || []).join(' ') + ' ' + (item.sections || []).join(' ')).toLowerCase();
     var hasOverlap = false;
     for (var k = 0; k < qWords.length; k++) {
       if (textToSearch.indexOf(qWords[k]) !== -1) {

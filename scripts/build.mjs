@@ -51,7 +51,7 @@ function scanContent() {
 
           // Build search entry
           const plainDesc = truncate(stripHtml(data.description || ''), 150);
-          const sectionTitles = (data.sections || []).slice(0, 5).map(s => s.title);
+          const sectionTitles = (data.sections || []).map(s => s.title);
           const searchEntry = {
             title: data.title || id,
             category: data.category || '',
