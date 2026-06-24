@@ -8,7 +8,7 @@
   "sections": [
     {
       "title": "MDP & Bellman Equations",
-      "description": "<p><span class='material-symbols-outlined text-sm align-middle text-slate-400' aria-hidden='true'>psychology</span> <strong>Intuition:</strong> Markov Decision Processes define the RL setting. State transitions depend only on current state and action. Dynamic programming resolves the Bellman equations sequentially.</p>",
+      "description": "<p><span class='material-symbols-outlined text-sm align-middle text-slate-400' aria-hidden='true'>psychology</span> <strong>Intuition:</strong> Markov Decision Processes define the RL setting. State transitions depend only on current state and action. Dynamic programming resolves the Bellman equations sequentially.</p><div style=\"margin:20px 0;display:flex;justify-content:center\"><svg width=\"400\" height=\"130\" viewBox=\"0 0 400 130\" fill=\"none\" xmlns=\"http://www.w\" style=\"max-width:100%\"><defs><style>.rl-box{fill:var(--bg-secondary);stroke:var(--border-default);stroke-width:1.5}.rl-edge{stroke:var(--brand-primary);stroke-width:1.5;marker-end:url(#arrow-rl)}.rl-lbl{font:10px monospace;fill:var(--text-primary);text-anchor:middle;dominant-baseline:central}</style><marker id=\"arrow-rl\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"5\" markerHeight=\"5\" orient=\"auto-start-reverse\"><path d=\"M0,2 L8,5 L0,8 z\" fill=\"var(--brand-primary)\"/></marker></defs><rect x=\"30\" y=\"40\" width=\"90\" height=\"50\" rx=\"4\" class=\"rl-box\" style=\"stroke:var(--brand-primary)\"/><text x=\"75\" y=\"65\" class=\"rl-lbl\" style=\"font-weight:bold;fill:var(--brand-primary)\">RL Agent</text><line x1=\"120\" y1=\"50\" x2=\"265\" y2=\"50\" class=\"rl-edge\"/><text x=\"190\" y=\"40\" class=\"rl-lbl\" style=\"font-size:9px\">Action (a_t)</text><line x1=\"265\" y1=\"80\" x2=\"120\" y2=\"80\" class=\"rl-edge\"/><text x=\"190\" y=\"92\" class=\"rl-lbl\" style=\"font-size:9px\">Reward (r_t) + State (s_t)</text><rect x=\"270\" y=\"40\" width=\"100\" height=\"50\" rx=\"4\" class=\"rl-box\"/><text x=\"320\" y=\"65\" class=\"rl-lbl\">Environment</text></svg></div>",
       "codeBlock": "import numpy as np\n# Value Iteration step\ndef value_iteration_step(V, P, R, gamma):\n    Q = R + gamma * np.sum(P * V[np.newaxis, np.newaxis, :], axis=-1)\n    return np.max(Q, axis=-1)"
     },
     {
@@ -39,5 +39,12 @@
   ],
   "details": "<p><strong>Staff Engineer Summary:</strong> Aligning models requires selecting between direct and reinforcement paradigms. Use DPO/ORPO for simplicity and memory savings. For reasoning models with verifiers, use GRPO to sample groups, normalize advantages, and apply step-level grading via Process Reward Models (PRMs).</p>",
   "codeBlock": "",
-  "tags": ["FAANG", "rlhf", "alignment", "ppo", "dpo", "grpo"]
+  "tags": [
+    "FAANG",
+    "rlhf",
+    "alignment",
+    "ppo",
+    "dpo",
+    "grpo"
+  ]
 }

@@ -8,7 +8,7 @@
   "sections": [
     {
       "title": "The Three Pillars of LLM Observability",
-      "description": "<p><span class='material-symbols-outlined text-sm align-middle text-slate-400' aria-hidden='true'>psychology</span> <strong>Intuition:</strong> Observability requires mapping traditional telemetry (metrics, logs, traces) to LLM structures. Log input-output pairs; trace the RAG, tool, and safety checks; monitor tokens, latency (TTFT, TPOT), and cost.</p>",
+      "description": "<p><span class='material-symbols-outlined text-sm align-middle text-slate-400' aria-hidden='true'>psychology</span> <strong>Intuition:</strong> Observability requires mapping traditional telemetry (metrics, logs, traces) to LLM structures. Log input-output pairs; trace the RAG, tool, and safety checks; monitor tokens, latency (TTFT, TPOT), and cost.</p><div style=\"margin:20px 0;display:flex;justify-content:center\"><svg width=\"420\" height=\"130\" viewBox=\"0 0 420 130\" fill=\"none\" xmlns=\"http://www.w\" style=\"max-width:100%\"><defs><style>.ob-box{fill:var(--bg-secondary);stroke:var(--border-default);stroke-width:1.5}.ob-edge{stroke:var(--brand-primary);stroke-width:1.5;marker-end:url(#arrow-ob)}.ob-lbl{font:10px monospace;fill:var(--text-primary);text-anchor:middle;dominant-baseline:central}.ob-lbl-title{font:bold 11px system-ui;fill:var(--brand-primary);text-anchor:middle}</style><marker id=\"arrow-ob\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"5\" markerHeight=\"5\" orient=\"auto-start-reverse\"><path d=\"M0,2 L8,5 L0,8 z\" fill=\"var(--brand-primary)\"/></marker></defs><rect x=\"10\" y=\"35\" width=\"80\" height=\"50\" rx=\"4\" class=\"ob-box\"/><text x=\"50\" y=\"50\" class=\"ob-lbl\" style=\"font-weight:bold\">Prompts &</text><text x=\"50\" y=\"70\" class=\"ob-lbl\">Outputs</text><line x1=\"90\" y1=\"60\" x2=\"125\" y2=\"60\" class=\"ob-edge\"/><rect x=\"130\" y=\"25\" width=\"130\" height=\"70\" rx=\"4\" class=\"ob-box\" style=\"stroke:var(--brand-primary)\"/><text x=\"195\" y=\"45\" class=\"ob-lbl-title\">Tracing Span</text><text x=\"195\" y=\"65\" class=\"ob-lbl\">├── LLM Call</text><text x=\"195\" y=\"80\" class=\"ob-lbl\">└── Vector DB</text><line x1=\"260\" y1=\"60\" x2=\"295\" y2=\"60\" class=\"ob-edge\"/><rect x=\"300\" y=\"35\" width=\"110\" height=\"50\" rx=\"4\" class=\"ob-box\" style=\"stroke:var(--svg-accent-stroke)\"/><text x=\"355\" y=\"50\" class=\"ob-lbl\" style=\"fill:var(--svg-accent-text);font-weight:bold\">Evaluators</text><text x=\"355\" y=\"70\" class=\"ob-lbl\" style=\"font-size:9px\">Toxic/Correctness</text></svg></div>",
       "codeBlock": "# Traditional + LLM-specific telemetry wrapper\ndef log_llm_metrics(prompt, response, latency, tokens_in, tokens_out):\n    return {\n        \"latency_ms\": latency,\n        \"total_tokens\": tokens_in + tokens_out,\n        \"cost_usd\": (tokens_in * 0.0015 + tokens_out * 0.002) / 1000\n    }"
     },
     {
@@ -34,5 +34,11 @@
   ],
   "details": "<p><strong>Staff Engineer Summary:</strong> Observability requires statistical drift monitoring. Calculate PSI and KS test statistics on sliding inference windows, track feedback loop polarization via entropy checks, and establish model quality metrics as target SLOs.</p>",
   "codeBlock": "",
-  "tags": ["FAANG", "observability", "drift", "monitoring", "metrics"]
+  "tags": [
+    "FAANG",
+    "observability",
+    "drift",
+    "monitoring",
+    "metrics"
+  ]
 }
