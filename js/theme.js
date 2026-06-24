@@ -9,7 +9,7 @@
   function getTheme() {
     var stored = safeGet(key);
     if (stored === 'dark' || stored === 'light') return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light';
   }
   function apply(t) {
     document.documentElement.classList.toggle('dark', t === 'dark');
@@ -31,11 +31,6 @@
         apply(t);
         safeSet(key, t);
       });
-    }
-  });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    if (!safeGet(key)) {
-      apply(e.matches ? 'dark' : 'light');
     }
   });
 
