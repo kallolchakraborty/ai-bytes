@@ -809,13 +809,15 @@ html.dark .tag-badge:hover {
 
 /* ========== Print Styles ========== */
 @media print {
-  body { font-size: 11pt; color: #000; background: #fff; }
+  html, body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
   nav, .glass-nav, aside, [role="navigation"] { display: none !important; }
   main, .content-area, #content, .doc-content, section, article {
     margin: 0 !important; padding: 0 !important; max-width: 100% !important;
   }
-  a { color: #000 !important; }
-  pre, code { font-size: 9pt; border: 1px solid #ccc; page-break-inside: avoid; }
+  pre, code { font-size: 9pt; page-break-inside: avoid; }
   h1 { font-size: 18pt; margin-top: 0; }
   h2 { font-size: 14pt; }
   h3 { font-size: 12pt; }
@@ -1009,28 +1011,17 @@ details.group[open] summary {
     margin: 0 !important;
   }
   
-  /* Reset background for print accessibility */
+  /* Preserve backgrounds, text colors, and shadows for print accuracy */
   * {
-    background: transparent !important;
-    color: #000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
     box-shadow: none !important;
     text-shadow: none !important;
-  }
-  
-  /* Keep outline borders on code blocks */
-  pre, code, td, th, table {
-    border-color: #ddd !important;
-  }
-  
-  /* Adaptive SVGs to render in grayscale high contrast for printing */
-  svg {
-    filter: contrast(1.5) grayscale(1) !important;
   }
   
   /* Ensure details is fully printed even if closed in browser */
   details {
     display: block !important;
-    border: 1px solid #ddd !important;
   }
   details summary {
     font-weight: bold !important;
