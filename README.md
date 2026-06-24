@@ -2,13 +2,13 @@
 
 A modern, search-first documentation portal for developer study notes, cheat sheets, and interactive visual guides — built as a static site for GitHub Pages.
 
-**Current stats:** 3 HTML pages, 63 JSON content files (29 aiml, 15 python/basics, 1 python-history, 11 genai, 1 sysdesign, 1 databases, 1 faang-facts), 30 AIML/GenAI sidebar links across 6 phases, 60 search entries, 60 route map entries, ~1.3K JS lines across 4 files, ~885 CSS lines across 2 files.
+**Current stats:** 3 HTML pages, 73 JSON content files (32 aiml, 15 python/basics, 1 python-history, 16 genai, 4 sysdesign, 2 databases, 1 faang-facts, 1 sre, 1 oop, 1 product, 1 os, 1 security, 1 programming), 37 AI/ML/Infra sidebar links across 8 phases, 103 search entries, 103 route map entries, ~1.5K JS lines, ~950 CSS lines.
 
 ## Features
 
 - **Search-first** — Ctrl+K (or Cmd+K) opens a fuzzy search modal that indexes every page and guide. Results filter live as you type.
-- **Dark/light mode** — Persistent theme toggle with OS preference detection. Dark mode uses Tailwind's `class` strategy with `localStorage` persistence.
-- **Dynamic content** — 20+ reference pages (Python, Gen AI, System Internals) with Prism syntax highlighting, animated code blocks, and staggered entrance animations.
+- **Dark/light mode** — Persistent theme toggle with OS preference detection. Default is light mode with transition parameters.
+- **Dynamic content** — Reference pages with Prism syntax highlighting, SVG dynamic animations, and math typesetting templates.
 - **Collapsible sidebar** — Navigation sections close by default; parent section auto-opens when navigating to a page.
 - **Share on every page** — Share button opens a modal with URL copy + Twitter/X, LinkedIn, WhatsApp, and Email share options.
 
@@ -30,7 +30,7 @@ A modern, search-first documentation portal for developer study notes, cheat she
 
 `js/theme.js` runs synchronously in the `<head>` to prevent a flash of wrong theme.
 
-1. Checks `localStorage` for a saved `theme` value (`"dark"` / `"light"`).
+1. Checks `localStorage` for a saved `theme` value (`"dark"` / `"light"`). Defaults to `"light"`.
 2. If no saved value, checks `prefers-color-scheme` media query.
 3. Applies or removes `class="dark"` on `<html>`.
 4. All `localStorage` access is wrapped in try-catch for private browsing compatibility.
@@ -39,7 +39,7 @@ Both `css/main.css` (custom styles) and `css/tailwind.css` (pre-built Tailwind) 
 
 ## Tech Stack
 
-- **HTML** — 3 static pages, semantic HTML5, ARIA roles
+- **HTML** — static pages, semantic HTML5, ARIA roles
 - **CSS** — Tailwind CSS v3 (static build) + custom `css/main.css`
 - **JavaScript** — Vanilla JS (no transpilation step)
 - **Icons** — Material Symbols Outlined (Google Fonts CDN)
@@ -48,14 +48,15 @@ Both `css/main.css` (custom styles) and `css/tailwind.css` (pre-built Tailwind) 
 
 ## Architecture Optimizations
 
-The codebase follows several best practices for a static site without a build step:
+The codebase follows several best practices for a static site:
 
-- **DRY modals** — Share and search modals are injected dynamically by `js/modals.js`, eliminating 5 identical copies of share modal HTML and 2 copies of search modal HTML across pages.
-- **Consolidated CSS** — All player-page inline styles (compiler, interpreter) moved into `css/main.css` with shared rules deduplicated. Only page-specific body colors remain inline.
-- **Event delegation** — `modals.js` uses delegated click handlers on `document` instead of binding to individual elements, reducing memory usage and ensuring dynamically added elements work.
+- **Build Script Indexer** — `scripts/build.mjs` scans all JSON content files in `content/` and automatically compiles them into the `js/generated.js` routes dictionary, eliminating the need to manually register routes.
+- **Schema Validation** — `scripts/validate.mjs` checks JSON structures, tag taxomony, and links for absolute integrity.
+- **DRY modals** — Share and search modals are injected dynamically by `js/modals.js`.
+- **Event delegation** — `modals.js` uses delegated click handlers on `document` instead of binding to individual elements.
 - **10% global scale** — `html { font-size: 14.4px }` scales all rem-based Tailwind values proportionally with a single CSS line.
 - **Reduced motion respected** — `@media (prefers-reduced-motion: reduce)` disables all animations/transitions.
-- **Prism syntax highlighting** — CDN-loaded with custom token color overrides in main.css to match the brand palette.
+- **Prism syntax highlighting** — CDN-loaded with custom token color overrides in main.css.
 
 ## Project Structure
 
@@ -63,20 +64,30 @@ The codebase follows several best practices for a static site without a build st
 ├── index.html              Landing page
 ├── docs.html               Documentation portal with dynamic loader
 ├── css/
-│   ├── main.css            All custom styles (player animations, timeline, Prism overrides)
-│   ├── tailwind.css        Pre-built Tailwind CSS (48 KB, minified)
+│   ├── main.css            All custom styles (theme transitions, SVG templates, Prism overrides)
+│   ├── tailwind.css        Pre-built Tailwind CSS
 │   └── input.css           Tailwind source with @tailwind directives
 ├── js/
 │   ├── modals.js           Share + search modals (HTML injection and event handling)
-│   └── loader.js           Dynamic content loader for docs.html
+│   ├── theme.js            Synchronous theme initializer
+│   ├── loader.js           Dynamic content loader for docs.html
+│   └── generated.js        Build-generated content routes & index mapping
+├── scripts/
+│   ├── build.mjs           Dynamic content compiler script
+│   └── validate.mjs        Schema validation checker
 ├── content/
-│   ├── python/             Python content (history + 15 basics pages)
-│   ├── programming/        Programming concept content
-│   └── genai/              Gen AI study guides (11 pages: LLM, KV Cache, RAG, fine-tuning, MoE, LLM Serving, prompt/context/harness/loop engineering)
+│   ├── python/             Python basics & history
+│   ├── aiml/               Classic ML, MLOps, math, and roadmap
+│   ├── genai/              LLM engineering, pretraining, serving, optimization
+│   ├── sysdesign/          System design & distributed systems
+│   ├── databases/          SQL & NoSQL database systems
+│   ├── security/           Security engineering guides
+│   ├── sre/                Site reliability engineering guides
+│   └── faang/              FAANG facts
 ├── assets/
-│   └── logo.svg            Minified Circle of Knowledge logo (557 B)
+│   └── logo.svg            Circle of Knowledge logo
 ├── tailwind.config.js      Unified Tailwind configuration
-├── package.json            npm scripts (build:css, watch:css)
+├── package.json            npm scripts (build, validate, dev)
 └── package-lock.json       Dependency lockfile
 ```
 
