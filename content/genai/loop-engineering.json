@@ -44,5 +44,5 @@
   ],
   "details": "<p class='mb-3'><strong>Agentic System Design Flow:</strong> Start with <strong>ReAct</strong> (max 10 steps, CoT reasoning). If tool calls are needed, add <strong>function calling</strong> (parallel for independent tools). If accuracy is too low, add <strong>self-consistency</strong> (K=5 CoT paths, majority vote). If exploring decision trees, upgrade to <strong>ToT</strong> (BFS beam=3, depth=5). If agents need to learn from past failures, add <strong>Reflexion memory</strong>. If tasks need multiple perspectives, use a <strong>3-agent panel</strong> (coder + reviewer + tester). Productionise with <strong>async queuing, state checkpointing, timeout handling, and step-level observability</strong>. Cost rises 5-20× from simple Q&A to agentic; monitor token budgets per step and enforce hard iteration limits. At FAANG scale, a 1% improvement in loop efficiency (reducing average steps from 6 to 5) saves $50K+/month on API costs for a system serving 1M queries/day.</p>",
   "codeBlock": "",
-  "tags": ["FAANG", "gen-ai", "agent", "llm-agents", "reasoning", "tool-use", "react", "self-refine", "chain-of-thought", "tree-of-thoughts", "multi-agent"]
+  "tags": ["FAANG", "gen-ai", "agents", "llm-agents", "reasoning", "tool-use", "react", "self-refine", "chain-of-thought", "tree-of-thoughts", "multi-agent"]
 }

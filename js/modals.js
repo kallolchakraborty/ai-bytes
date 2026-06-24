@@ -42,6 +42,7 @@
 
   const searchHTML = [
     '<div id="search-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm p-4 sm:p-10 justify-center items-start" role="dialog" aria-modal="true" aria-label="Search documentation">',
+    '<div id="search-live-announcer" class="sr-only" aria-live="polite"></div>',
     '<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col overflow-hidden mt-10 md:h-[550px] max-h-[85vh]">',
     '<div class="search-header-container p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50 transition-colors duration-200 shrink-0">',
     '<span class="material-symbols-outlined text-slate-400 transition-colors duration-200" aria-hidden="true">search</span>',
@@ -190,11 +191,13 @@
   function _applySelection(el) {
     if (!el) return;
     el.classList.add('bg-brand-50', 'dark:bg-brand-500/10', 'border-brand-100', 'dark:border-brand-500/30');
+    el.setAttribute('aria-selected', 'true');
   }
 
   function _clearSelection(el) {
     if (!el) return;
     el.classList.remove('bg-brand-50', 'dark:bg-brand-500/10', 'border-brand-100', 'dark:border-brand-500/30');
+    el.removeAttribute('aria-selected');
   }
 
   // ---- Search History (localStorage) ----
@@ -362,6 +365,20 @@
   function _scoreItem(item, query) {
     var q = (query || '').toLowerCase().trim();
     if (!q) return 0;
+
+    // Google Staff Engineer: O(N) Substring overlap heuristic checks
+    var qWords = q.split(/\s+/).filter(Boolean);
+    var textToSearch = ((item.title || '') + ' ' + (item.category || '') + ' ' + (item.description || '') + ' ' + (item.tags || []).join(' ')).toLowerCase();
+    var hasOverlap = false;
+    for (var k = 0; k < qWords.length; k++) {
+      if (textToSearch.indexOf(qWords[k]) !== -1) {
+        hasOverlap = true;
+        break;
+      }
+    }
+    // Skip expensive O(N * M^2) Levenshtein calculations on completely unrelated items
+    if (!hasOverlap && q.length >= 3) return 0;
+
     var titleScore = _fuzzyScore(item.title, q) * 100;
     var catScore = _fuzzyScore(item.category, q) * 50;
     var descScore = _fuzzyScore(item.description || '', q) * 20;
@@ -410,8 +427,18 @@
     if (!query || !text) return text || '';
     var q = query.toLowerCase().trim();
     if (!q) return text;
-    var re = new RegExp('(' + _escapeRe(q) + ')', 'gi');
-    return text.replace(re, '<mark class="bg-brand-100 dark:bg-brand-500/30 text-inherit rounded-sm px-0.5">$1</mark>');
+    var words = q.split(/\s+/).filter(function(w) { return w.length >= 2; });
+    if (words.length === 0) return text;
+
+    // Single-pass replacement, avoiding tag names/attribute modification
+    var pattern = '(' + words.map(_escapeRe).join('|') + ')';
+    var re = new RegExp('<[^>]*>|' + pattern, 'gi');
+    return text.replace(re, function(match, p1) {
+      if (p1) {
+        return '<mark class="bg-brand-100 dark:bg-brand-500/30 text-inherit rounded-sm px-0.5">' + p1 + '</mark>';
+      }
+      return match;
+    });
   }
 
   // ---- Modal Open / Close ----
@@ -555,6 +582,11 @@
       }
 
       _currentResults = topItems.map(function(s) { return s.item; });
+
+      var announcer = document.getElementById('search-live-announcer');
+      if (announcer) {
+        announcer.textContent = topItems.length === 0 ? "No results found." : topItems.length + " results found. Use up and down arrows to navigate, enter to select.";
+      }
 
       if (topItems.length === 0) {
         updateSearchPreview(null);
