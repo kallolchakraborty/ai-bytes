@@ -42,15 +42,19 @@
 
   const searchHTML = [
     '<div id="search-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm p-4 sm:p-10 justify-center items-start" role="dialog" aria-modal="true" aria-label="Search documentation">',
-    '<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden mt-10">',
-    '<div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50 transition-colors duration-200">',
+    '<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col overflow-hidden mt-10 md:h-[550px] max-h-[85vh]">',
+    '<div class="search-header-container p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50 transition-colors duration-200 shrink-0">',
     '<span class="material-symbols-outlined text-slate-400 transition-colors duration-200" aria-hidden="true">search</span>',
     '<input id="modal-search-input" type="text" placeholder="Type to search study materials..." aria-label="Search query" class="w-full bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white font-sans font-medium placeholder:text-slate-400 focus:outline-none">',
     '<button id="close-search-btn" class="text-xs text-slate-400 border border-slate-200 dark:border-slate-800 px-2.5 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all font-sans">ESC</button>',
     '</div>',
-    '<div id="modal-search-results" class="p-4 max-h-[400px] overflow-y-auto flex flex-col gap-3" role="listbox" aria-label="Search results">',
+    '<div class="flex flex-1 overflow-hidden min-h-0">',
+    '  <div id="modal-search-results" class="w-full md:w-1/2 p-4 overflow-y-auto flex flex-col gap-2 border-r border-slate-100 dark:border-slate-800/80" role="listbox" aria-label="Search results">',
+    '  </div>',
+    '  <div id="modal-search-preview" class="hidden md:flex md:w-1/2 p-6 overflow-y-auto flex-col bg-slate-50/40 dark:bg-slate-900/40 text-slate-700 dark:text-slate-300 min-w-0">',
+    '  </div>',
     '</div>',
-    '<div class="p-3 bg-slate-50 dark:bg-slate-800/20 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">',
+    '<div class="p-3 bg-slate-50 dark:bg-slate-800/20 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono shrink-0">',
     '<span>↑↓ navigate · enter select · esc close</span>',
     '<span class="hidden sm:inline">filter: <span class="text-brand-400">cat:</span>net · <span class="text-brand-400">tag:</span>security</span>',
     '</div>',
@@ -152,6 +156,7 @@
   let _selectedIndex = -1;
   let _lastFocusedEl = null;
   let _searchDebounce = null;
+  let _currentResults = [];
 
   function _getFocusable(el) {
     if (!el) return [];
@@ -441,6 +446,76 @@
 
   // ---- Render ----
 
+  function updateSearchPreview(item) {
+    var preview = document.getElementById('modal-search-preview');
+    if (!preview) return;
+
+    if (!item) {
+      preview.innerHTML = [
+        '<div class="flex flex-col items-center justify-center h-full text-center p-6 text-slate-400 dark:text-slate-500">',
+        '<span class="material-symbols-outlined text-4xl mb-2">find_in_page</span>',
+        '<p class="text-xs font-medium">Select a guide to preview content details</p>',
+        '</div>'
+      ].join('');
+      return;
+    }
+
+    var sectionsHtml = '';
+    if (item.sections && item.sections.length > 0) {
+      sectionsHtml = [
+        '<div class="mt-4">',
+        '<h5 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Study Guide Overview</h5>',
+        '<ul class="space-y-1.5">',
+        item.sections.map(function(sec) {
+          return [
+            '<li class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-450 truncate">',
+            '<span class="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span>',
+            '<span>' + sec + '</span>',
+            '</li>'
+          ].join('');
+        }).join(''),
+        '</ul>',
+        '</div>'
+      ].join('');
+    }
+
+    var tagsHtml = '';
+    if (item.tags && item.tags.length > 0) {
+      tagsHtml = [
+        '<div class="flex flex-wrap gap-1.5 mt-4">',
+        item.tags.map(function(tag) {
+          return '<span class="text-[10px] font-semibold font-mono text-brand-500 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10 px-2 py-0.5 rounded-lg border border-brand-500/10">#' + tag + '</span>';
+        }).join(''),
+        '</div>'
+      ].join('');
+    }
+
+    preview.innerHTML = [
+      '<div class="flex flex-col h-full justify-between gap-6">',
+      '  <div class="flex flex-col gap-3 min-w-0">',
+      '    <div class="flex items-center gap-1.5">',
+      '      <span class="text-[10px] font-bold text-brand-500 uppercase tracking-wider bg-brand-light px-2.5 py-1 rounded-md">' + item.category + '</span>',
+      '    </div>',
+      '    <h4 class="text-base font-bold text-slate-800 dark:text-white leading-snug tracking-tight">' + item.title + '</h4>',
+      '    <p class="text-xs text-slate-500 dark:text-slate-450 leading-relaxed font-sans mt-1">' + item.description + '</p>',
+      sectionsHtml,
+      tagsHtml,
+      '  </div>',
+      '  <a href="' + item.url + '" class="w-full py-2.5 px-4 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-center text-xs font-semibold tracking-wide transition-all shadow-md shadow-brand-500/10 hover:shadow-brand-500/25 flex items-center justify-center gap-1.5 shrink-0 select-guide-btn">',
+      '    <span>Read Study Guide</span>',
+      '    <span class="material-symbols-outlined text-sm font-semibold">arrow_forward</span>',
+      '  </a>',
+      '</div>'
+    ].join('\n');
+    
+    var btn = preview.querySelector('.select-guide-btn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        closeSearchModal();
+      });
+    }
+  }
+
   function renderResults(rawQuery) {
     var results = document.getElementById('modal-search-results');
     if (!results) return;
@@ -453,6 +528,8 @@
       var filters = parsed.filters;
 
       if (!q) {
+        _currentResults = [];
+        updateSearchPreview(null);
         renderEmptyState(results);
         return;
       }
@@ -477,9 +554,10 @@
         _addSearchHistory(searchTerms);
       }
 
-      _selectedIndex = -1;
+      _currentResults = topItems.map(function(s) { return s.item; });
 
       if (topItems.length === 0) {
+        updateSearchPreview(null);
         renderNoResults(results, searchTerms, filters, query);
         return;
       }
@@ -500,65 +578,29 @@
         var titleHtml = _highlight(item.title, searchTerms);
         var catHtml = _highlight(item.category, searchTerms);
 
-        var descHtml = '';
-        var snippet = _getContextSnippet(item.description || '', searchTerms, 140);
-        if (snippet) {
-          descHtml = '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">' + _highlight(snippet, searchTerms) + '</p>';
-        } else if (item.description) {
-          var truncated = item.description.length > 120 ? item.description.substring(0, 120) + '…' : item.description;
-          descHtml = '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + truncated + '</p>';
-        }
-
-        var sectionsHtml = '';
-        if (item.sections && item.sections.length > 0) {
-          var matchedSections = [];
-          for (var s = 0; s < item.sections.length; s++) {
-            if (_fuzzyScore(item.sections[s], searchTerms) > 0.5) {
-              matchedSections.push(item.sections[s]);
-            }
-          }
-          if (matchedSections.length === 0) matchedSections = item.sections.slice(0, 2);
-          if (matchedSections.length > 0) {
-            sectionsHtml = '<div class="flex flex-wrap gap-1.5 mt-2">' +
-              matchedSections.map(function(s) {
-                return '<span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">' + (_highlight(s, searchTerms) || s) + '</span>';
-              }).join('') +
-              '</div>';
-          }
-        }
-
-        var tagsHtml = '';
-        if (item.tags && item.tags.length > 0 && searchTerms) {
-          var matchedTags = [];
-          for (var t = 0; t < item.tags.length; t++) {
-            if (_fuzzyScore(item.tags[t], searchTerms) > 0.5) {
-              matchedTags.push(item.tags[t]);
-            }
-          }
-          if (matchedTags.length > 0) {
-            tagsHtml = '<div class="flex flex-wrap gap-1.5 mt-1">' +
-              matchedTags.slice(0, 3).map(function(tag) {
-                return '<span class="text-[10px] font-mono text-brand-500 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10 px-1.5 py-0.5 rounded">#' + tag + '</span>';
-              }).join('') +
-              '</div>';
-          }
-        }
-
         return [
-          '<a href="' + item.url + '" role="option" class="search-result flex flex-col gap-1 p-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-brand-50 dark:hover:bg-brand-500/10 border border-slate-100 dark:border-slate-800 hover:border-brand-100 dark:hover:border-brand-500/30 rounded-lg transition-all group" data-index="' + idx + '">',
-          '<div class="flex items-center justify-between">',
-          '<span class="text-xs font-bold text-brand-500 uppercase tracking-wider">' + catHtml + '</span>',
-          '<span class="material-symbols-outlined text-slate-400 group-hover:text-brand-500 transition-transform group-hover:translate-x-1" aria-hidden="true">arrow_forward</span>',
-          '</div>',
-          '<span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-500 transition-colors">' + titleHtml + '</span>',
-          descHtml,
-          sectionsHtml,
-          tagsHtml,
+          '<a href="' + item.url + '" role="option" class="search-result flex items-center justify-between p-3 bg-slate-50/40 dark:bg-slate-800/20 hover:bg-brand-50 dark:hover:bg-brand-500/10 border border-slate-100/50 dark:border-slate-800/30 hover:border-brand-100 dark:hover:border-brand-500/20 rounded-xl transition-all group" data-index="' + idx + '">',
+          '  <div class="flex items-center gap-3 min-w-0">',
+          '    <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 group-hover:text-brand-500 transition-colors shrink-0">description</span>',
+          '    <div class="flex flex-col min-w-0">',
+          '      <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">' + catHtml + '</span>',
+          '      <span class="font-semibold text-xs text-slate-700 dark:text-slate-200 group-hover:text-brand-500 transition-colors truncate">' + titleHtml + '</span>',
+          '    </div>',
+          '  </div>',
+          '  <span class="material-symbols-outlined text-slate-350 dark:text-slate-650 group-hover:text-brand-500 transition-all transform group-hover:translate-x-0.5 shrink-0 text-sm">chevron_right</span>',
           '</a>'
         ].join('');
       }).join('');
 
       results.innerHTML = html;
+
+      _selectedIndex = 0;
+      var firstLink = results.querySelector('.search-result');
+      if (firstLink) {
+        _applySelection(firstLink);
+      }
+      updateSearchPreview(_currentResults[0]);
+
     } catch (err) {
       console.error('Search error:', err);
       results.innerHTML = '<div role="status" aria-live="polite" class="p-8 text-center text-red-500 dark:text-red-400 font-mono text-sm">Search encountered an error. Please try again.</div>';
@@ -680,6 +722,10 @@
 
     _applySelection(links[_selectedIndex]);
     links[_selectedIndex].focus();
+
+    if (_currentResults[_selectedIndex]) {
+      updateSearchPreview(_currentResults[_selectedIndex]);
+    }
   }
 
   // ---- Event Handlers ----
@@ -774,6 +820,10 @@
 
     _selectedIndex = Array.prototype.indexOf.call(links, result);
     _applySelection(result);
+
+    if (_currentResults[_selectedIndex]) {
+      updateSearchPreview(_currentResults[_selectedIndex]);
+    }
   });
 
   // ---- Readme Modal Logic & Markup ----

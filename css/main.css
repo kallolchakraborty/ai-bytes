@@ -28,18 +28,33 @@ a { text-decoration: none; }
 button, input { border: none; outline: none; font-family: inherit; }
 
 /* ========== Search Modal Active Theme Styles ========== */
-#search-modal div:has(#modal-search-input:focus) {
+#search-modal .search-header-container:has(#modal-search-input:focus) {
   border-bottom-color: var(--brand-primary) !important;
   background-color: rgba(233, 84, 32, 0.02) !important;
 }
-html.dark #search-modal div:has(#modal-search-input:focus) {
+html.dark #search-modal .search-header-container:has(#modal-search-input:focus) {
   background-color: rgba(233, 84, 32, 0.04) !important;
 }
-#search-modal div:has(#modal-search-input:focus) .material-symbols-outlined {
+#search-modal .search-header-container:has(#modal-search-input:focus) .material-symbols-outlined {
   color: var(--brand-primary) !important;
 }
-#search-modal div:has(#modal-search-input:focus) button {
+#search-modal .search-header-container:has(#modal-search-input:focus) button {
   border-color: rgba(233, 84, 32, 0.3) !important;
+}
+
+/* ========== Search Split-Pane Supporting Styles ========== */
+#modal-search-results::-webkit-scrollbar { width: 4px; }
+#modal-search-preview::-webkit-scrollbar { width: 4px; }
+
+.search-result.bg-brand-50, 
+html.dark .search-result.dark\:bg-brand-500\/10 {
+  background-color: var(--brand-light) !important;
+  border-color: var(--brand-primary) !important;
+}
+
+.search-result.bg-brand-50 .material-symbols-outlined, 
+html.dark .search-result.dark\:bg-brand-500\/10 .material-symbols-outlined {
+  color: var(--brand-primary) !important;
 }
 
 
