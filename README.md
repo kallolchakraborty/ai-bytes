@@ -2,13 +2,12 @@
 
 A modern, search-first documentation portal for developer study notes, cheat sheets, and interactive visual guides — built as a static site for GitHub Pages.
 
-**Current stats:** 4 HTML pages, 62 JSON content files (29 aiml, 15 python/basics, 1 python-history, 10 genai, 1 sysdesign, 1 databases, 1 faang-facts), 29 AIML sidebar links across 6 phases, 59 search entries (29 AIML), 59 route map entries, ~1.4K JS lines across 4 files, ~885 CSS lines across 2 files.
+**Current stats:** 3 HTML pages, 63 JSON content files (29 aiml, 15 python/basics, 1 python-history, 11 genai, 1 sysdesign, 1 databases, 1 faang-facts), 30 AIML/GenAI sidebar links across 6 phases, 60 search entries, 60 route map entries, ~1.3K JS lines across 4 files, ~885 CSS lines across 2 files.
 
 ## Features
 
 - **Search-first** — Ctrl+K (or Cmd+K) opens a fuzzy search modal that indexes every page and guide. Results filter live as you type.
 - **Dark/light mode** — Persistent theme toggle with OS preference detection. Dark mode uses Tailwind's `class` strategy with `localStorage` persistence.
-- **Interactive animations** — GIL visual guide with scene-based slides, auto-play, keyboard navigation, and fullscreen mode.
 - **Dynamic content** — 20+ reference pages (Python, Gen AI, System Internals) with Prism syntax highlighting, animated code blocks, and staggered entrance animations.
 - **Collapsible sidebar** — Navigation sections close by default; parent section auto-opens when navigating to a page.
 - **Share on every page** — Share button opens a modal with URL copy + Twitter/X, LinkedIn, WhatsApp, and Email share options.
@@ -19,7 +18,6 @@ A modern, search-first documentation portal for developer study notes, cheat she
 |------|------|-------------|
 | Landing | `index.html` | Hero search bar, feature cards linking to docs categories |
 | Docs Portal | `docs.html` | Sidebar navigation, dynamic content loader, right-hand outline |
-| GIL | `gil.html` | 10-scene interactive on Python's Global Interpreter Lock |
 
 ## Keyboard Shortcuts
 
@@ -27,10 +25,6 @@ A modern, search-first documentation portal for developer study notes, cheat she
 |-----|---------|--------|
 | `Ctrl+K` / `Cmd+K` | Anywhere | Open/close search modal |
 | `Escape` | Modal | Close share or search modal |
-| `ArrowLeft` | GIL page | Previous scene |
-| `ArrowRight` | GIL page | Next scene |
-| `Space` | GIL page | Play/pause auto-advance |
-| `F` | GIL page | Toggle fullscreen |
 
 ## Theme
 
@@ -43,26 +37,9 @@ A modern, search-first documentation portal for developer study notes, cheat she
 
 Both `css/main.css` (custom styles) and `css/tailwind.css` (pre-built Tailwind) use `.dark` ancestor selectors for dark mode variants.
 
-## Interactive Animations
-
-The GIL page (`gil.html`) uses `js/animation-core.js` as its animation module.
-
-- Scene data (titles, subtitles, labels) is embedded inline in each interactive HTML page.
-- Scene tags are `<button type="button" role="tab" aria-selected="...">` inside a `role="tablist"` group.
-- `animation-core.js` manages scene transitions, progress bar, auto-play timer, keyboard nav, and `aria-selected` state.
-- Each page provides an `onSceneAnimation` callback for scene-specific DOM manipulation.
-
-### Fullscreen
-
-Pressing `F` or clicking the fullscreen button requests fullscreen on the `#fullscreen-canvas` element. In fullscreen mode:
-
-- The canvas fills the viewport (`100vw × 100vh`).
-- Content scales via a `.fullscreen-stage` wrapper that letterboxes the 16:9 aspect ratio.
-- `#fullscreen-canvas:fullscreen` removes padding, border, and border-radius.
-
 ## Tech Stack
 
-- **HTML** — 4 static pages, semantic HTML5, ARIA roles
+- **HTML** — 3 static pages, semantic HTML5, ARIA roles
 - **CSS** — Tailwind CSS v3 (static build) + custom `css/main.css`
 - **JavaScript** — Vanilla JS (no transpilation step)
 - **Icons** — Material Symbols Outlined (Google Fonts CDN)
@@ -74,9 +51,8 @@ Pressing `F` or clicking the fullscreen button requests fullscreen on the `#full
 The codebase follows several best practices for a static site without a build step:
 
 - **DRY modals** — Share and search modals are injected dynamically by `js/modals.js`, eliminating 5 identical copies of share modal HTML and 2 copies of search modal HTML across pages.
-- **Consolidated CSS** — All player-page inline styles (compiler, interpreter, GIL) moved into `css/main.css` with shared rules deduplicated. Only page-specific body colors remain inline.
+- **Consolidated CSS** — All player-page inline styles (compiler, interpreter) moved into `css/main.css` with shared rules deduplicated. Only page-specific body colors remain inline.
 - **Event delegation** — `modals.js` uses delegated click handlers on `document` instead of binding to individual elements, reducing memory usage and ensuring dynamically added elements work.
-- **CSS variables for theming** — GIL page uses CSS custom properties (`--gil-*`) for light/dark mode, avoiding class-based overrides.
 - **10% global scale** — `html { font-size: 14.4px }` scales all rem-based Tailwind values proportionally with a single CSS line.
 - **Reduced motion respected** — `@media (prefers-reduced-motion: reduce)` disables all animations/transitions.
 - **Prism syntax highlighting** — CDN-loaded with custom token color overrides in main.css to match the brand palette.
@@ -86,20 +62,17 @@ The codebase follows several best practices for a static site without a build st
 ```
 ├── index.html              Landing page
 ├── docs.html               Documentation portal with dynamic loader
-├── gil.html                GIL animation page
 ├── css/
-│   ├── main.css            All custom styles (player animations, timeline, Prism overrides, GIL vars)
+│   ├── main.css            All custom styles (player animations, timeline, Prism overrides)
 │   ├── tailwind.css        Pre-built Tailwind CSS (48 KB, minified)
 │   └── input.css           Tailwind source with @tailwind directives
 ├── js/
 │   ├── modals.js           Share + search modals (HTML injection and event handling)
-│   ├── loader.js           Dynamic content loader for docs.html
-│   └── animation-core.js   Shared animation player (scenes, fullscreen, keyboard)
+│   └── loader.js           Dynamic content loader for docs.html
 ├── content/
 │   ├── python/             Python content (history + 15 basics pages)
 │   ├── programming/        Programming concept content
-│   ├── genai/              Gen AI study guides (10 pages: LLM, KV Cache, RAG, fine-tuning, MoE, LLM Serving, prompt/context/harness/loop engineering)
-│   └── interactive/        Animation scene data (JSON, embedded inline in HTML)
+│   └── genai/              Gen AI study guides (11 pages: LLM, KV Cache, RAG, fine-tuning, MoE, LLM Serving, prompt/context/harness/loop engineering)
 ├── assets/
 │   └── logo.svg            Minified Circle of Knowledge logo (557 B)
 ├── tailwind.config.js      Unified Tailwind configuration

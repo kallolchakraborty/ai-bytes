@@ -10,6 +10,23 @@
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
   --border-default: #e2e8f0;
+
+  /* Semantic SVG theme variables */
+  --svg-success-bg: rgba(16, 185, 129, 0.06);
+  --svg-success-stroke: #10b981;
+  --svg-success-text: #15803d;
+  --svg-error-bg: rgba(239, 68, 68, 0.06);
+  --svg-error-stroke: #ef4444;
+  --svg-error-text: #b91c1c;
+  --svg-warning-bg: rgba(245, 158, 11, 0.06);
+  --svg-warning-stroke: #f59e0b;
+  --svg-warning-text: #b45309;
+  --svg-info-bg: rgba(99, 102, 241, 0.06);
+  --svg-info-stroke: #6366f1;
+  --svg-info-text: #4338ca;
+  --svg-accent-bg: rgba(139, 92, 246, 0.06);
+  --svg-accent-stroke: #8b5cf6;
+  --svg-accent-text: #6d28d9;
 }
 html.dark {
   --brand-primary: #F5A389;
@@ -22,6 +39,23 @@ html.dark {
   --bg-primary: #0E1115;
   --bg-secondary: #0F1115;
   --border-default: rgba(255, 255, 255, 0.05);
+
+  /* Semantic SVG theme variables */
+  --svg-success-bg: rgba(52, 211, 153, 0.15);
+  --svg-success-stroke: #34d399;
+  --svg-success-text: #a7f3d0;
+  --svg-error-bg: rgba(248, 113, 113, 0.15);
+  --svg-error-stroke: #f87171;
+  --svg-error-text: #fca5a5;
+  --svg-warning-bg: rgba(251, 191, 36, 0.15);
+  --svg-warning-stroke: #fbbf24;
+  --svg-warning-text: #fde68a;
+  --svg-info-bg: rgba(129, 140, 248, 0.15);
+  --svg-info-stroke: #818cf8;
+  --svg-info-text: #c7d2fe;
+  --svg-accent-bg: rgba(167, 139, 250, 0.15);
+  --svg-accent-stroke: #a78bfa;
+  --svg-accent-text: #ddd6fe;
 }
 html { font-size: 14.4px; }
 a { text-decoration: none; }
