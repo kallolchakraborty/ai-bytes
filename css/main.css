@@ -882,6 +882,32 @@ html:not(.dark) .readme-content .bg-slate-900\/60 {
   background-color: var(--bg-secondary) !important;
 }
 
+/* ========== Table Styling and Alignment Fixes ========== */
+#docs-dynamic-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+#docs-dynamic-content th,
+#docs-dynamic-content td {
+  padding: 8px 12px !important;
+  text-align: left !important;
+  border: 1px solid var(--border-default) !important;
+}
+
+#docs-dynamic-content thead tr {
+  background-color: var(--bg-secondary) !important;
+}
+
+#docs-dynamic-content tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.01) !important;
+}
+html.dark #docs-dynamic-content tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
 /* ========== Deep Dive Container Overrides ========== */
 .deep-dive-box {
   background-color: var(--brand-light) !important;
