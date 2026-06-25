@@ -143,18 +143,22 @@ Routes map 27 hash anchors to 26 unique JSON paths in `js/loader.js` (two routes
 
 ## Search
 
-The search modal (`Ctrl+K` / `Cmd+K`) performs live fuzzy filtering across a static JSON index defined in `js/modals.js`.
+The search modal (`Ctrl+K` / `Cmd+K`) performs live fuzzy filtering across a static JSON index defined in `js/generated.js` (compiled automatically from `content/` files).
 
 - Every result is an `<a>` element with `role="option"` inside a `role="listbox"` container.
 - The empty state uses `role="status"` with `aria-live="polite"` for screen-reader announcements.
 - Results show the category label + title with a hover arrow animation.
 - Clicking a result navigates to `docs.html#<anchor>` and closes the modal.
 
-The search index contains:
-- **Python Basics** — Data Types & Operations, Loops & Control Flow, Input & Output, File Handling, API Handling, Multithreading & Concurrency, History of Python
-- **Python Data Structures** — Built-in Collections, Linked Lists, Stacks & Queues, Priority Queues & Heaps, Trees & BSTs, Graphs & Networks
-- **Python Algorithms** — Time & Space Complexity, Algorithms & Patterns, OOP & Design Patterns
-- **Gen AI** — What exactly is an LLM?, KV Cache, RAG, Fine-Tuning & PEFT, Prompt Engineering, Context Engineering, Harness Engineering, Loop Engineering, Mixture of Experts, LLM Serving
+The search index contains comprehensive guides across:
+- **Python & Data Structures** — Basics, built-in collections, advanced coding, trees, graphs, heaps, modules, and memory management.
+- **Systems & Low-Level** — Operating Systems, Computer Networks, and Object-Oriented Design.
+- **Databases & API Design** — Fundamental storage, index design, query optimization, and modern API architecture.
+- **System Design** — Fundamentals, Staff+ architectures, distributed systems, SRE, and security.
+- **Classic AI/ML** — ML foundations, deep learning, math derivations, ML system design, and advanced ML (NLP, CV, RL/RLHF).
+- **Generative AI** — Transformer architectures, pretraining, Mixture of Experts (MoE), RAG, fine-tuning (PEFT), context engineering, agents, model context protocol (MCP), and serving/deployment.
+- **AI Infrastructure** — Distributed training, ML platforms, model compilation, vector search, and cost engineering.
+- **Leadership & Career** — FAANG Staff+ study plans, behavioral strategy, product sense, mock interview transcripts, and company-specific focus areas.
 
 ## Accessibility
 
