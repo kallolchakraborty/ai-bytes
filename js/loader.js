@@ -869,6 +869,21 @@ window.addEventListener('DOMContentLoaded', () => {
   updateSidebarBookmarks();
   updateSidebarLinksUI();
 
+  // Print theme override to always force light mode for printing
+  let isDarkModeBeforePrint = false;
+  window.addEventListener('beforeprint', () => {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark');
+      isDarkModeBeforePrint = true;
+    }
+  });
+  window.addEventListener('afterprint', () => {
+    if (isDarkModeBeforePrint) {
+      document.documentElement.classList.add('dark');
+      isDarkModeBeforePrint = false;
+    }
+  });
+
   // ---- Reading scroll progress bar ----
   (function() {
     var bar = document.getElementById('reading-progress-bar');

@@ -812,10 +812,14 @@ html.dark .tag-badge:hover {
   html, body {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    overflow: visible !important;
+    height: auto !important;
   }
-  nav, .glass-nav, aside, [role="navigation"] { display: none !important; }
+  nav, .glass-nav, aside, [role="navigation"], footer { display: none !important; }
   main, .content-area, #content, .doc-content, section, article {
     margin: 0 !important; padding: 0 !important; max-width: 100% !important;
+    overflow: visible !important;
+    height: auto !important;
   }
   pre, code { font-size: 9pt; page-break-inside: avoid; }
   h1 { font-size: 18pt; margin-top: 0; }
