@@ -471,7 +471,7 @@ html.dark {
 .timeline-dot-year {
   font-size: 12px;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   color: var(--brand-primary);
   white-space: nowrap;
   background: var(--brand-light);
@@ -542,7 +542,7 @@ html.dark {
 .readme-content ul, .readme-content ol { padding-left: 1.5rem; margin: 0.5rem 0; }
 .readme-content li { margin: 0.25rem 0; }
 .readme-content code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 13px;
   background: var(--bg-secondary);
   padding: 2px 6px;
@@ -604,7 +604,7 @@ html.dark {
 pre[class*="language-"] {
   background: #f8fafc !important;
   color: #374151 !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Ubuntu Mono', monospace !important;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 0.75rem;
   padding: 1.25rem !important;
@@ -624,7 +624,7 @@ html.dark pre[class*="language-"] {
   padding: 0 !important;
   border-radius: 0 !important;
 }
-code[class*="language-"] { text-shadow: none !important; color: inherit !important; font-family: 'JetBrains Mono', monospace !important; font-size: inherit !important; }
+code[class*="language-"] { text-shadow: none !important; color: inherit !important; font-family: 'Ubuntu Mono', monospace !important; font-size: inherit !important; }
 :not(pre) > code[class*="language-"] { background: transparent !important; padding: 0 !important; }
 
 .token {
@@ -1055,9 +1055,16 @@ html.dark .related-topic-card:hover {
 }
 
 /* ========== SVG Text Rendering and Overflow Fixes ========== */
-/* Target only elements designed as monospace labels to prevent box overflows, without affecting system-ui titles */
+/* Enforce Ubuntu or Ubuntu Mono on all SVG texts */
+svg text,
+svg tspan {
+  font-family: 'Ubuntu', sans-serif !important;
+}
+
 svg text[class*="-lbl"]:not([class*="-title"]),
+svg text[font-family="monospace"],
 svg text[class*="mono"],
+svg text.monospace,
 svg text.l,
 svg text.co-lbl,
 svg text.ll-lbl,
@@ -1076,8 +1083,11 @@ svg text.prod-lbl,
 svg text.prg-lbl,
 svg text.pattern-lbl,
 svg text.os-lbl,
-svg text.faang-lbl {
-  font-family: 'JetBrains Mono', 'Ubuntu Mono', 'Courier New', monospace !important;
+svg text.faang-lbl,
+svg text.mc-lbl,
+svg text.td-lbl,
+svg text.fg-lbl {
+  font-family: 'Ubuntu Mono', monospace !important;
   letter-spacing: -0.04em !important;
   text-rendering: optimizeLegibility !important;
 }
@@ -1107,7 +1117,7 @@ svg text.prg-lbl-title,
 svg text.pattern-lbl-title,
 svg text.os-lbl-title,
 svg text.faang-lbl-title {
-  font-family: system-ui, -apple-system, sans-serif !important;
+  font-family: 'Ubuntu', sans-serif !important;
   font-size: 11px !important;
   letter-spacing: -0.01em !important;
 }
